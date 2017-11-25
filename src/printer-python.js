@@ -20,8 +20,6 @@ function genericPrint(path, options, print) {
     return n;
   }
 
-  console.log(n.ast_type);
-
   switch (n.ast_type) {
     case "Module": {
       return concat([
@@ -33,10 +31,11 @@ function genericPrint(path, options, print) {
     case "FunctionDef": {
       return "def something: pass";
     }
-  }
 
-  // TODO: implement all the ast types
-  return "hello world";
+    default:
+      /* istanbul ignore next */
+      throw new Error("unknown python type: " + JSON.stringify(n.ast_type));
+  }
 }
 
 module.exports = genericPrint;
