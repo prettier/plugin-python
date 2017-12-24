@@ -671,9 +671,11 @@ function genericPrint(path, options, print) {
       return group(concat(parts));
     }
 
+    /* istanbul ignore next */
     default:
-      /* istanbul ignore next */
-      throw new Error("unknown python type: " + JSON.stringify(n.ast_type));
+      // eslint-disable-next-line no-console
+      console.error("Unknown Python node:", n);
+      return n.source;
   }
 }
 
