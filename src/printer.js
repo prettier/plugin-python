@@ -549,6 +549,16 @@ function genericPrint(path, options, print) {
       return printIf(path, print);
     }
 
+    case "IfExp": {
+      return concat([
+        path.call(print, "body"),
+        " if ",
+        path.call(print, "test"),
+        " else ",
+        path.call(print, "orelse")
+      ])
+    }
+
     case "Subscript": {
       return concat([
         path.call(print, "value"),
