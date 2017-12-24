@@ -32,3 +32,9 @@ rules:
   - error
   - never
   - exceptRange: true
+overrides:
+- files: "tests/**/*.js"
+  rules:
+    strict: off
+  globals:
+    run_spec: true
