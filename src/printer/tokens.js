@@ -1,3 +1,5 @@
+"use strict";
+
 module.exports = {
   Add: "+",
   USub: "-",
@@ -27,6 +29,6 @@ module.exports = {
   Is: "is",
   IsNot: "is not",
   Pass: "pass",
-}
   Continue: "continue",
   Break: "break"
+};

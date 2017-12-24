@@ -460,7 +460,7 @@ function genericPrint(path, options, print) {
         path.call(print, "test"),
         " else ",
         path.call(print, "orelse")
-      ])
+      ]);
     }
 
     case "Subscript": {

@@ -26,6 +26,7 @@
     "jest-runner-eslint": "^0.3.0"
   },
   "scripts": {
+    "lint": "prettier src/**/*.js --list-different",
     "test": "jest"
   },
   "jest": {
