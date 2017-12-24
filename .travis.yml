@@ -1,7 +1,7 @@
 ---
 language: node_js
 node_js:
-  - 4
+  - 6
   - 8
   - 9
 cache:
@@ -21,4 +21,4 @@ before_install:
   - pyenv install -s 3.6.3
   - pyenv global 2.7.11 3.6.3
 script:
-  - AST_COMPARE=1 yarn test -- --runInBand
+  - yarn test -- --runInBand
