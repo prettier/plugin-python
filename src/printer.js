@@ -510,6 +510,10 @@ function genericPrint(path, options, print) {
       return "is";
     }
 
+    case "IsNot": {
+      return "is not";
+    }
+
     case "Import": {
       return concat(["import ", join(", ", path.map(print, "names"))]);
     }
