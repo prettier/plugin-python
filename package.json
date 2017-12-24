@@ -6,6 +6,10 @@
   "repository": "https://github.com/prettier/prettier-python",
   "author": "Lucas Azzola <@azz>",
   "license": "MIT",
+  "files": [
+    "src",
+    "vendor"
+  ],
   "dependencies": {
     "prettier": "azz/prettier#f6d0b5fe"
   },
