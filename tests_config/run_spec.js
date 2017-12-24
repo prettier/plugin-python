@@ -9,6 +9,14 @@ const massageAST = ast => ast; // require("../src/common/clean-ast.js").massageA
 const AST_COMPARE = process.env["AST_COMPARE"];
 
 function run_spec(dirname, parsers, options) {
+  options = Object.assign(
+    {
+      plugins: ["."],
+      tabWidth: 4
+    },
+    options
+  );
+
   /* instabul ignore if */
   if (!parsers || !parsers.length) {
     throw new Error(`No parsers were specified for ${dirname}`);
