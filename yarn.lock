@@ -2688,9 +2688,9 @@ preserve@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/preserve/-/preserve-0.2.0.tgz#815ed1f6ebc65926f865b310c0713bcb3315ce4b"
 
-prettier@azz/prettier#plugin-refactor:
+prettier@azz/prettier#0409d436:
   version "1.9.2"
-  resolved "https://codeload.github.com/azz/prettier/tar.gz/c0b518a08509fc00853ffc03b134267301eacbac"
+  resolved "https://codeload.github.com/azz/prettier/tar.gz/0409d436081ede2c924c883e4df4d934207ab805"
   dependencies:
     "@babel/code-frame" "7.0.0-beta.35"
     babylon "7.0.0-beta.34"

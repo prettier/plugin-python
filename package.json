@@ -6,6 +6,9 @@
   "repository": "https://github.com/prettier/prettier-python",
   "author": "Lucas Azzola <@azz>",
   "license": "MIT",
+  "dependencies": {
+    "prettier": "azz/prettier#0409d436"
+  },
   "devDependencies": {
     "eslint": "^4.14.0",
     "eslint-config-prettier": "^2.9.0",
@@ -13,8 +16,7 @@
     "eslint-plugin-jest": "^21.5.0",
     "eslint-plugin-prettier": "^2.4.0",
     "jest": "^22.0.4",
-    "jest-runner-eslint": "^0.3.0",
-    "prettier": "azz/prettier#plugin-refactor"
+    "jest-runner-eslint": "^0.3.0"
   },
   "scripts": {
     "test": "jest"
