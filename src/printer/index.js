@@ -1,6 +1,7 @@
 "use strict";
 
-const util = require("./_util-from-prettier");
+const util = require("../_util-from-prettier");
+const tokens = require("./tokens");
 
 const docBuilders = require("prettier").doc.builders;
 const concat = docBuilders.concat;
@@ -179,6 +180,10 @@ function genericPrint(path, options, print) {
 
   if (typeof n === "string") {
     return n;
+  }
+
+  if (tokens.hasOwnProperty(n.ast_type)) {
+    return tokens[n.ast_type];
   }
 
   switch (n.ast_type) {
@@ -404,59 +409,6 @@ function genericPrint(path, options, print) {
       return concat([path.call(print, "value"), ".", n.attr]);
     }
 
-    case "Add": {
-      return "+";
-    }
-
-    case "USub":
-    case "Sub": {
-      return "-";
-    }
-
-    case "Mult": {
-      return "*";
-    }
-
-    case "MatMult": {
-      return "@";
-    }
-
-    case "Div": {
-      return "/";
-    }
-
-    case "FloorDiv": {
-      return "//";
-    }
-
-    case "Mod": {
-      return "%";
-    }
-
-    case "Pow": {
-      return "**";
-    }
-
-    case "LShift": {
-      return "<<";
-    }
-
-    case "RShift": {
-      return ">>";
-    }
-
-    case "BitAnd": {
-      return "&";
-    }
-
-    case "BitXor": {
-      return "^";
-    }
-
-    case "BitOr": {
-      return "|";
-    }
-
     case "Compare": {
       const ops = path.map(print, "ops");
       const comparators = path.map(print, "comparators");
@@ -464,50 +416,6 @@ function genericPrint(path, options, print) {
       const pairs = ops.map((op, i) => concat([" ", op, " ", comparators[i]]));
 
       return concat([path.call(print, "left")].concat(pairs));
-    }
-
-    case "Lt": {
-      return "<";
-    }
-
-    case "LtE": {
-      return "<=";
-    }
-
-    case "Gt": {
-      return ">";
-    }
-
-    case "GtE": {
-      return ">=";
-    }
-
-    case "Eq": {
-      return "==";
-    }
-
-    case "NotEq": {
-      return "!=";
-    }
-
-    case "In": {
-      return "in";
-    }
-
-    case "Or": {
-      return "or";
-    }
-
-    case "And": {
-      return "and";
-    }
-
-    case "Not": {
-      return "not";
-    }
-
-    case "Is": {
-      return "is";
     }
 
     case "Import": {
@@ -543,6 +451,16 @@ function genericPrint(path, options, print) {
 
     case "If": {
       return printIf(path, print);
+    }
+
+    case "IfExp": {
+      return concat([
+        path.call(print, "body"),
+        " if ",
+        path.call(print, "test"),
+        " else ",
+        path.call(print, "orelse")
+      ]);
     }
 
     case "Subscript": {
@@ -612,10 +530,6 @@ function genericPrint(path, options, print) {
           path.call(print, "right")
         ])
       );
-    }
-
-    case "NotIn": {
-      return "not in";
     }
 
     case "Try": {
@@ -704,10 +618,6 @@ function genericPrint(path, options, print) {
       return printWithItem(path, print);
     }
 
-    case "Pass": {
-      return "pass";
-    }
-
     case "BoolOp": {
       return group(
         join(
@@ -761,9 +671,11 @@ function genericPrint(path, options, print) {
       return group(concat(parts));
     }
 
+    /* istanbul ignore next */
     default:
-      /* istanbul ignore next */
-      throw new Error("unknown python type: " + JSON.stringify(n.ast_type));
+      // eslint-disable-next-line no-console
+      console.error("Unknown Python node:", n);
+      return n.source;
   }
 }
 
