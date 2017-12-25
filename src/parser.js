@@ -25,11 +25,8 @@ function parse(text, parsers, opts) {
   const pythonExectuable = `python${opts.pythonVersion == "2" ? "" : "3"}`;
   const executionResult = parseText(text, pythonExectuable);
 
-  const ast = JSON.parse(executionResult.stdout.toString());
-
-  // TODO: add comments
-
-  ast.comments = [];
+  const res = executionResult.stdout.toString();
+  const ast = JSON.parse(res);
   return ast;
 }
 

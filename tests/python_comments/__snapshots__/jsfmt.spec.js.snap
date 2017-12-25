@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`comments.py 1`] = `
+if a:  # a
+    # b
+    c
+
+    # c
+
+    d
+
+    # e
+
+    call(
+        # a
+    )
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+if a: # a
+    # b
+    c
+
+    # c
+
+    d
+
+    # e
+
+    call()
+    # a
+
+`;
