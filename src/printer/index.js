@@ -138,35 +138,33 @@ function printWithItem(path, print) {
   return group(concat(parts));
 }
 
-function printIf(path, print, isElse) {
+function isElse(node) {
+  return (
+    node.ast_type === "If" &&
+    node.orelse.length > 0 &&
+    !(node.orelse.length === 1 && node.orelse[0].ast_type !== "If")
+  );
+}
+
+function printIf(path, print) {
   const n = path.getValue();
-
-  let ifType = "if ";
-
-  if (isElse) {
-    ifType = "elif ";
-  }
+  const parent = path.getParentNode();
 
   const parts = [
-    ifType,
+    isElse(parent) && parent.orelse.indexOf(n) !== -1 ? "elif " : "if ",
     path.call(print, "test"),
     ":",
     indent(concat([hardline, printBody(path, print)]))
   ];
 
-  if (n.orelse.length > 0) {
-    if (n.orelse.length === 1 && n.orelse[0].ast_type !== "If") {
-      parts.push(
-        line,
-        "else:",
-        indent(concat([line, concat(path.map(print, "orelse"))]))
-      );
-    } else {
-      parts.push(
-        line,
-        concat(path.map(p => printIf(p, print, true), "orelse"))
-      );
-    }
+  if (isElse(n)) {
+    parts.push(line, concat(path.map(print, "orelse")));
+  } else if (n.orelse.length > 0) {
+    parts.push(
+      line,
+      "else:",
+      indent(concat([line, concat(path.map(print, "orelse"))]))
+    );
   }
 
   return concat(parts);
