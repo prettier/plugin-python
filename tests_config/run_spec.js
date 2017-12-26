@@ -3,7 +3,6 @@
 const fs = require("fs");
 const extname = require("path").extname;
 const prettier = require("prettier");
-const plugin = require("../src");
 const massageAST = require("prettier/src/common/clean-ast").massageAST;
 
 const AST_COMPARE = process.env["AST_COMPARE"];
@@ -32,7 +31,7 @@ function run_spec(dirname, parsers, options) {
     ) {
       const source = read(path).replace(/\r\n/g, "\n");
 
-      const mergedOptions = Object.assign(mergeDefaultOptions(options || {}), {
+      const mergedOptions = Object.assign({}, options, {
         parser: parsers[0]
       });
       const output = prettyprint(source, path, mergedOptions);
@@ -105,7 +104,7 @@ function stripLocation(ast) {
 }
 
 function parse(string, opts) {
-  return stripLocation(plugin.parsers.python.parse(string, {}, opts));
+  return stripLocation(prettier.__debug.parse(string, opts));
 }
 
 function prettyprint(src, filename, options) {
@@ -134,13 +133,4 @@ function raw(string) {
     throw new Error("Raw snapshots have to be strings.");
   }
   return { [Symbol.for("raw")]: string };
-}
-
-function mergeDefaultOptions(parserConfig) {
-  return Object.assign(
-    {
-      printWidth: 80
-    },
-    parserConfig
-  );
 }
