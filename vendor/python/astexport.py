@@ -6,8 +6,15 @@ import asttokens
 
 
 def export_json(atok, pretty_print=False):
+    dict = export_dict(atok)
+    dict['comments'] = [{
+            'ast_type': 'comment',
+            'value': token.string,
+            'start': token.startpos,
+            'end': token.endpos,
+        } for token in atok.tokens if token.type == 57]
     return json.dumps(
-        export_dict(atok),
+        dict,
         indent=4 if pretty_print else None,
         sort_keys=True,
         separators=(",", ": ") if pretty_print else (",", ":")
@@ -52,6 +59,10 @@ class DictExportVisitor:
             )
             # Use None as default when lineno/col_offset are not set
             args[attr] = meth(getattr(node, attr, None))
+
+        if hasattr(node, 'first_token'):
+            args['start'] = node.first_token.startpos
+            args['end'] = node.last_token.endpos
 
         args['source'] = self.atok.get_text(node)
 
