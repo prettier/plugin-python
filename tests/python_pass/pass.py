@@ -1,4 +1,5 @@
 class Client:
     pass
 
-def x(): pass
+def x():
+    pass

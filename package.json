@@ -23,13 +23,16 @@
     "eslint-plugin-jest": "^21.5.0",
     "eslint-plugin-prettier": "^2.4.0",
     "jest": "^21.1.0",
-    "jest-runner-eslint": "^0.3.0"
+    "jest-runner-eslint": "^0.3.0",
+    "semver": "^5.4.1"
   },
   "scripts": {
     "lint": "prettier src/**/*.js --list-different",
     "test": "jest"
   },
   "jest": {
-    "projects": ["<rootDir>/jest.*.config.js"]
+    "projects": [
+      "<rootDir>/jest.*.config.js"
+    ]
   }
 }

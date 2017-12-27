@@ -1,16 +1,31 @@
 "use strict";
 
+const spawnSync = require("child_process").spawnSync;
 const fs = require("fs");
 const extname = require("path").extname;
 const prettier = require("prettier");
 const massageAST = require("prettier/src/common/clean-ast").massageAST;
+const semver = require("semver");
 
-const AST_COMPARE = process.env["AST_COMPARE"];
+const PYTHON_VERSION = spawnSync("python", [
+  "-c",
+  "import platform; print(platform.python_version())"
+])
+  .stdout.toString()
+  .trim();
 
-function run_spec(dirname, parsers, options) {
+const AST_COMPARE = process.env.AST_COMPARE;
+
+function run_spec(dirname, parsers, versionRange, options) {
+  if (!semver.satisfies(PYTHON_VERSION, versionRange)) {
+    test.skip(dirname, () => {});
+    return;
+  }
+
   options = Object.assign(
     {
       plugins: ["."],
+      printWidth: 79,
       tabWidth: 4
     },
     options
@@ -36,7 +51,7 @@ function run_spec(dirname, parsers, options) {
       });
       const output = prettyprint(source, path, mergedOptions);
       test(`${filename} - ${mergedOptions.parser}-verify`, () => {
-        expect(raw(source + "~".repeat(80) + "\n" + output)).toMatchSnapshot(
+        expect(raw(source + "~".repeat(79) + "\n" + output)).toMatchSnapshot(
           filename
         );
       });
@@ -77,6 +92,7 @@ function run_spec(dirname, parsers, options) {
     }
   });
 }
+
 global.run_spec = run_spec;
 
 function stripLocation(ast) {

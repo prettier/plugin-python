@@ -3,19 +3,7 @@
 exports[`hello.py 1`] = `
 def this_is_a_long_function(this_is_a_long_parameter, this_is_another_long_parameter):
     print("hello world", this_is_another_long_parameter)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-def this_is_a_long_function(
-    this_is_a_long_parameter,
-    this_is_another_long_parameter
-):
-    print("hello world", this_is_another_long_parameter)
-
-`;
-
-exports[`hello.py 2`] = `
-def this_is_a_long_function(this_is_a_long_parameter, this_is_another_long_parameter):
-    print("hello world", this_is_another_long_parameter)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 def this_is_a_long_function(
     this_is_a_long_parameter,
     this_is_another_long_parameter

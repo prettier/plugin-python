@@ -1,1 +1,1 @@
-run_spec(__dirname, ["python"]);
+run_spec(__dirname, ["python"], "*");

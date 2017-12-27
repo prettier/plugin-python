@@ -6,6 +6,7 @@ const path = require("path");
 function parse(text) {
   const executionResult = spawnSync("python", ["-m", "prettier.parser"], {
     env: {
+      PATH: process.env.PATH,
       PYTHONPATH: [
         path.join(__dirname, "../python"),
         process.env.PYTHONPATH
