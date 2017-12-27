@@ -5,8 +5,11 @@ node_js:
   - 8
   - 9
 env:
-  - PYTHON_VERSION=2.7.11
-  - PYTHON_VERSION=3.6.3
+  global:
+    - PYTHON_VERSIONS="2.7.11 3.6.3"
+  matrix:
+    - PYTHON_VERSION=2.7.11
+    - PYTHON_VERSION=3.6.3
 cache:
   yarn: true
   directories:
@@ -18,8 +21,8 @@ before_install:
   - curl -L https://raw.githubusercontent.com/pyenv/pyenv-installer/master/bin/pyenv-installer | bash
   - export PATH="/home/travis/.pyenv/bin:$PATH"
   - eval "$(pyenv init -)"
-  - pyenv install -s $PYTHON_VERSION
+  - echo $PYTHON_VERSIONS | xargs -n1 pyenv install -s
   - pyenv global $PYTHON_VERSION
 script:
   - yarn lint
-  - yarn test -- --runInBand
+  - yarn test --runInBand
