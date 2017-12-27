@@ -631,6 +631,10 @@ function genericPrint(path, options, print) {
         : printPython2With(path, [], print); // Python 2
     }
 
+    case "withitem": {
+      return printWithItem(path, print);
+    }
+
     case "BoolOp": {
       return group(
         join(
