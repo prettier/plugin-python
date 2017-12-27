@@ -7,8 +7,8 @@
   "author": "Lucas Azzola <@azz>",
   "license": "MIT",
   "files": [
-    "src",
-    "vendor"
+    "python",
+    "src"
   ],
   "engines": {
     "node": ">=6"

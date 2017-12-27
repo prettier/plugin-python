@@ -3,31 +3,23 @@
 const spawnSync = require("child_process").spawnSync;
 const path = require("path");
 
-function parseText(text, pythonExecutable) {
-  const executionResult = spawnSync(
-    pythonExecutable,
-    [path.join(__dirname, "../vendor/python/astexport.py")],
-    {
-      input: text
-    }
-  );
+function parse(text) {
+  const executionResult = spawnSync("python", ["-m", "prettier.parser"], {
+    env: {
+      PYTHONPATH: [
+        path.join(__dirname, "../python"),
+        process.env.PYTHONPATH
+      ].join(path.delimiter)
+    },
+    input: text
+  });
 
-  const error = executionResult.stderr.toString();
-
-  if (error) {
-    throw new Error(error);
+  if (executionResult.status) {
+    throw new Error(executionResult.stderr.toString());
   }
 
-  return executionResult;
-}
-
-function parse(text, parsers, opts) {
-  const pythonExectuable = `python${opts.pythonVersion == "2" ? "" : "3"}`;
-  const executionResult = parseText(text, pythonExectuable);
-
   const res = executionResult.stdout.toString();
-  const ast = JSON.parse(res);
-  return ast;
+  return JSON.parse(res);
 }
 
 module.exports = parse;
