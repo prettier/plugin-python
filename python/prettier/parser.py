@@ -10,12 +10,7 @@ def main():
     atok = asttokens.ASTTokens(source, parse=True)
 
     exported_ast = astexport.export(atok)
-    print(json.dumps(
-        exported_ast,
-        indent=4,
-        sort_keys=True,
-        separators=(',', ': '),
-    ))
+    json.dump(exported_ast, sys.stdout, separators=(',', ':'))
 
 
 if __name__ == '__main__':
