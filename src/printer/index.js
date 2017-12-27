@@ -128,6 +128,29 @@ function printForIn(path, print) {
   ]);
 }
 
+function printWith(path, items, print) {
+  return concat([
+    group(concat(["with", line, join(", ", items), ":"])),
+    indent(concat([hardline, printBody(path, print)]))
+  ]);
+}
+
+function printPython2With(path, items, print) {
+  items.push(printWithItem(path, print));
+  let result;
+
+  const n = path.getValue();
+  if (n.body.length === 1 && n.body[0].ast_type === "With") {
+    path.each(p => {
+      result = printPython2With(p, items, print);
+    }, "body");
+
+    return result;
+  }
+
+  return printWith(path, items, print);
+}
+
 function printWithItem(path, print) {
   const parts = [path.call(print, "context_expr")];
 
@@ -603,19 +626,9 @@ function genericPrint(path, options, print) {
     }
 
     case "With": {
-      // python 2 and 3
-      const items = n.items
-        ? path.map(print, "items")
-        : [printWithItem(path, print)];
-
-      return concat([
-        group(concat(["with", line, join(",", items), ":"])),
-        indent(concat([hardline, printBody(path, print)]))
-      ]);
-    }
-
-    case "withitem": {
-      return printWithItem(path, print);
+      return n.items
+        ? printWith(path, path.map(print, "items"), print) // Python 3
+        : printPython2With(path, [], print); // Python 2
     }
 
     case "BoolOp": {
