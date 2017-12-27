@@ -18,7 +18,7 @@ const AST_COMPARE = process.env.AST_COMPARE;
 
 function run_spec(dirname, parsers, versionRange, options) {
   if (!semver.satisfies(PYTHON_VERSION, versionRange)) {
-    test.skip(dirname, () => {});
+    test.skip(dirname); // eslint-disable-line jest/no-disabled-tests
     return;
   }
 
