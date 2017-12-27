@@ -17,11 +17,6 @@ const PYTHON_VERSION = spawnSync("python", [
 const AST_COMPARE = process.env.AST_COMPARE;
 
 function run_spec(dirname, parsers, versionRange, options) {
-  if (!semver.satisfies(PYTHON_VERSION, versionRange)) {
-    test.skip(dirname); // eslint-disable-line jest/no-disabled-tests
-    return;
-  }
-
   options = Object.assign(
     {
       plugins: ["."],
@@ -44,6 +39,16 @@ function run_spec(dirname, parsers, versionRange, options) {
       filename[0] !== "." &&
       filename !== "jsfmt.spec.js"
     ) {
+      if (!semver.satisfies(PYTHON_VERSION, versionRange)) {
+        // Skip each test here with the snapshot name below to avoid obsolete
+        // snapshot failures.
+        parsers.forEach(() => {
+          // eslint-disable-next-line jest/no-disabled-tests
+          test.skip(filename);
+        });
+        return;
+      }
+
       const source = read(path).replace(/\r\n/g, "\n");
 
       const mergedOptions = Object.assign({}, options, {
