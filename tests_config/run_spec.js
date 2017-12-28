@@ -56,9 +56,9 @@ function run_spec(dirname, parsers, versionRange, options) {
       });
       const output = prettyprint(source, path, mergedOptions);
       test(`${filename} - ${mergedOptions.parser}-verify`, () => {
-        expect(raw(source + "~".repeat(79) + "\n" + output)).toMatchSnapshot(
-          filename
-        );
+        expect(
+          raw(source + "~".repeat(mergedOptions.printWidth) + "\n" + output)
+        ).toMatchSnapshot(filename);
       });
 
       parsers.slice(1).forEach(parserName => {
