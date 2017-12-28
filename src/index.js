@@ -7,11 +7,12 @@ const print = require("./printer");
 const languages = [
   {
     name: "Python",
+    since: "1.9.2", // FIXME: Fix this before releasing.
     parsers: ["python"],
     extensions: [".py"],
     tmScope: "source.py",
     aceMode: "text",
-    liguistLanguageId: 303,
+    linguistLanguageId: 303,
     vscodeLanguageIds: ["python"]
   }
 ];
