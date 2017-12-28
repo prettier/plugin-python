@@ -137,15 +137,10 @@ function printWith(path, items, print) {
 
 function printPython2With(path, items, print) {
   items.push(printWithItem(path, print));
-  let result;
 
   const n = path.getValue();
   if (n.body.length === 1 && n.body[0].ast_type === "With") {
-    path.each(p => {
-      result = printPython2With(p, items, print);
-    }, "body");
-
-    return result;
+    return concat(path.map(p => printPython2With(p, items, print), "body"));
   }
 
   return printWith(path, items, print);
