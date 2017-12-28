@@ -12,6 +12,7 @@ cache:
   directories:
   - node_modules
 before_install:
+  - pyenv install -s $PYTHON_VERSION
   - pyenv global $PYTHON_VERSION
   - python --version
 install:
