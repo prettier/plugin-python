@@ -1,5 +1,5 @@
 {
-  "name": "prettier-python",
+  "name": "@prettier/python",
   "version": "0.0.0-development",
   "description": "Prettier Python Plugin",
   "main": "src",

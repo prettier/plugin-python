@@ -8,7 +8,7 @@ Check back soon :)
 ## Install
 
 ```bash
-yarn add --dev --exact prettier prettier-python
+yarn add --dev --exact prettier @prettier/python
 ```
 
 ## Configure
@@ -17,7 +17,7 @@ yarn add --dev --exact prettier prettier-python
 
 ```json
 {
-  "plugins": ["prettier-python"]
+  "plugins": ["@prettier/python"]
 }
 ```
 
