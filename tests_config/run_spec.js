@@ -40,8 +40,9 @@ function run_spec(dirname, parsers, versionRange, options) {
       filename !== "jsfmt.spec.js"
     ) {
       if (!semver.satisfies(PYTHON_VERSION, versionRange)) {
-        // Skip each test here with the snapshot name below to avoid obsolete
-        // snapshot failures.
+        // We need to explicitly skip tests that are disabled for the current
+        // version of Python, using the same name as the snapshot name below.
+        // Otherwise we get obsolete snapshot failures for these tests.
         parsers.forEach(() => {
           // eslint-disable-next-line jest/no-disabled-tests
           test.skip(filename);
