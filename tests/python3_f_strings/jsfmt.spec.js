@@ -1,1 +1,1 @@
-run_spec(__dirname, ["python"], { pythonVersion: "3" });
+run_spec(__dirname, ["python"], ">=3.6");

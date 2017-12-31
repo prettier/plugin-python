@@ -7,7 +7,7 @@ async def example():
         'image': image,
         'username': data.user.screen_name,
     }))
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 async def example():
     await channel.put(json.dumps({
         "text": data.text,

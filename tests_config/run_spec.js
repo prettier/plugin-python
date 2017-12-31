@@ -1,16 +1,26 @@
 "use strict";
 
+const spawnSync = require("child_process").spawnSync;
 const fs = require("fs");
 const extname = require("path").extname;
 const prettier = require("prettier");
 const massageAST = require("prettier/src/common/clean-ast").massageAST;
+const semver = require("semver");
 
-const AST_COMPARE = process.env["AST_COMPARE"];
+const PYTHON_VERSION = spawnSync("python", [
+  "-c",
+  "import platform; print(platform.python_version())"
+])
+  .stdout.toString()
+  .trim();
 
-function run_spec(dirname, parsers, options) {
+const AST_COMPARE = process.env.AST_COMPARE;
+
+function run_spec(dirname, parsers, versionRange, options) {
   options = Object.assign(
     {
       plugins: ["."],
+      printWidth: 79,
       tabWidth: 4
     },
     options
@@ -29,6 +39,17 @@ function run_spec(dirname, parsers, options) {
       filename[0] !== "." &&
       filename !== "jsfmt.spec.js"
     ) {
+      if (!semver.satisfies(PYTHON_VERSION, versionRange)) {
+        // We need to explicitly skip tests that are disabled for the current
+        // version of Python, using the same name as the snapshot name below.
+        // Otherwise we get obsolete snapshot failures for these tests.
+        parsers.forEach(() => {
+          // eslint-disable-next-line jest/no-disabled-tests
+          test.skip(filename);
+        });
+        return;
+      }
+
       const source = read(path).replace(/\r\n/g, "\n");
 
       const mergedOptions = Object.assign({}, options, {
@@ -36,9 +57,9 @@ function run_spec(dirname, parsers, options) {
       });
       const output = prettyprint(source, path, mergedOptions);
       test(`${filename} - ${mergedOptions.parser}-verify`, () => {
-        expect(raw(source + "~".repeat(80) + "\n" + output)).toMatchSnapshot(
-          filename
-        );
+        expect(
+          raw(source + "~".repeat(mergedOptions.printWidth) + "\n" + output)
+        ).toMatchSnapshot(filename);
       });
 
       parsers.slice(1).forEach(parserName => {
@@ -77,6 +98,7 @@ function run_spec(dirname, parsers, options) {
     }
   });
 }
+
 global.run_spec = run_spec;
 
 function stripLocation(ast) {

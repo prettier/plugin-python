@@ -1,31 +1,8 @@
 import ast
-import fileinput
-import json
-
-import asttokens
+import tokenize
 
 
-def export_json(atok, pretty_print=False):
-    dict = export_dict(atok)
-    dict['comments'] = [{
-            'ast_type': 'comment',
-            'value': token.string,
-            'start': token.startpos,
-            'end': token.endpos,
-        } for token in atok.tokens if token.type == 57]
-    return json.dumps(
-        dict,
-        indent=4 if pretty_print else None,
-        sort_keys=True,
-        separators=(",", ": ") if pretty_print else (",", ":")
-    )
-
-
-def export_dict(atok):
-    return DictExportVisitor(atok).visit(atok.tree)
-
-
-class DictExportVisitor:
+class DictExportVisitor(object):
     ast_type_field = "ast_type"
 
     def __init__(self, atok):
@@ -102,21 +79,17 @@ class DictExportVisitor:
             }
 
 
-def parse(source):
-    assert (isinstance(source, str))
+def export(atok):
+    exported_ast = DictExportVisitor(atok).visit(atok.tree)
 
-    atok = asttokens.ASTTokens(source, parse=True)
+    exported_ast['comments'] = [
+        {
+            'ast_type': 'comment',
+            'value': token.string,
+            'start': token.startpos,
+            'end': token.endpos,
+        }
+        for token in atok.tokens if token.type == tokenize.COMMENT
+    ]
 
-    return atok
-
-
-def main():
-    source = "".join(fileinput.input())
-
-    tree = parse(source)
-    json = export_json(tree, True)
-    print(json)
-
-
-if __name__ == '__main__':
-    main()
+    return exported_ast

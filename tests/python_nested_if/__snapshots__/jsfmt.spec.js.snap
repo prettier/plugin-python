@@ -4,40 +4,17 @@ exports[`nested_if.py 1`] = `
 if x == 'none':
     if False:
         print('None')
-elif x == None:
+elif x is None:
     print('oh')
 elif x == 12:
     print('oh')
 else:
     print(123)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 if x == "none":
     if False:
         print("None")
-elif x == None:
-    print("oh")
-elif x == 12:
-    print("oh")
-else:
-    print(123)
-
-`;
-
-exports[`nested_if.py 2`] = `
-if x == 'none':
-    if False:
-        print('None')
-elif x == None:
-    print('oh')
-elif x == 12:
-    print('oh')
-else:
-    print(123)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-if x == "none":
-    if False:
-        print("None")
-elif x == None:
+elif x is None:
     print("oh")
 elif x == 12:
     print("oh")
