@@ -2572,9 +2572,9 @@ preserve@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/preserve/-/preserve-0.2.0.tgz#815ed1f6ebc65926f865b310c0713bcb3315ce4b"
 
-prettier@prettier/prettier#ee148bfdeda373445ac9b67338cbae3df10a6576:
+prettier@prettier/prettier#b63c669ed9821a0e0d6918243ef4f4a091b222a9:
   version "1.9.2"
-  resolved "https://codeload.github.com/prettier/prettier/tar.gz/ee148bfdeda373445ac9b67338cbae3df10a6576"
+  resolved "https://codeload.github.com/prettier/prettier/tar.gz/b63c669ed9821a0e0d6918243ef4f4a091b222a9"
   dependencies:
     "@babel/code-frame" "7.0.0-beta.35"
     babylon "7.0.0-beta.34"
@@ -2612,7 +2612,7 @@ prettier@prettier/prettier#ee148bfdeda373445ac9b67338cbae3df10a6576:
     resolve "1.5.0"
     semver "5.4.1"
     string-width "2.1.1"
-    typescript "2.6.2"
+    typescript "2.7.0-insiders.20171214"
     typescript-eslint-parser "11.0.0"
     unicode-regex "1.0.1"
     unified "6.1.6"
@@ -3228,9 +3228,9 @@ typescript-eslint-parser@11.0.0:
     lodash.unescape "4.0.1"
     semver "5.4.1"
 
-typescript@2.6.2:
-  version "2.6.2"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.6.2.tgz#3c5b6fd7f6de0914269027f03c0946758f7673a4"
+typescript@2.7.0-insiders.20171214:
+  version "2.7.0-insiders.20171214"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.7.0-insiders.20171214.tgz#841344ddae5f498a97c0435fcd12860480050e71"
 
 uglify-js@^2.6:
   version "2.8.29"

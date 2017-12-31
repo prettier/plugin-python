@@ -1,5 +1,5 @@
 {
-  "name": "prettier-python",
+  "name": "@prettier/python",
   "version": "0.0.0-development",
   "description": "Prettier Python Plugin",
   "main": "src",
@@ -14,7 +14,7 @@
     "node": ">=6"
   },
   "dependencies": {
-    "prettier": "prettier/prettier#ee148bfdeda373445ac9b67338cbae3df10a6576"
+    "prettier": "prettier/prettier#b63c669ed9821a0e0d6918243ef4f4a091b222a9"
   },
   "devDependencies": {
     "eslint": "^4.14.0",
