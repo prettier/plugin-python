@@ -39,12 +39,18 @@ function printComment(commentPath) {
   }
 }
 
+function clean(ast, newObj) {
+  delete newObj.lineno;
+  delete newObj.col_offset;
+}
+
 const printers = {
   python: {
     print,
     hasPrettierIgnore: util.hasIgnoreComment,
     printComment,
-    canAttachComment
+    canAttachComment,
+    massageAstNode: clean
   }
 };
 

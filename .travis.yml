@@ -21,5 +21,4 @@ before_install:
   - pyenv install -s 3.6.3
   - pyenv global 2.7.11 3.6.3
 script:
-  - yarn lint
-  - yarn test -- --runInBand
+  - AST_COMPARE=1 yarn test -- --runInBand
