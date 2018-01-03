@@ -82,7 +82,8 @@ l = [i for j in range(10) for i in range(j) if j%2 == 0]
 l = [i for j in range(10) for i in range(j) if j%2 == 0 and i%2 == 0]
 # l = [(a, b) for (a,b,c) in l2]
 # l = [{a:b} for (a,b,c) in l2]
-l = [i for j in k if j%2 == 0 if j*2 < 20 for i in j if i%2==0]
+# https://github.com/prettier/prettier-python/issues/18
+# l = [i for j in k if j%2 == 0 if j*2 < 20 for i in j if i%2==0]
 
 # l = (i for i in j)
 # l = (i for i in j if i%2 == 0)

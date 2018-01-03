@@ -27,7 +27,8 @@
   },
   "scripts": {
     "lint": "jest -c jest.eslint.config.js",
-    "test": "jest"
+    "test": "jest",
+    "prettier": "prettier --plugin=. --parser=python"
   },
   "jest": {
     "projects": ["<rootDir>/jest.*.config.js"]
