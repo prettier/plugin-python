@@ -305,7 +305,7 @@ function genericPrint(path, options, print) {
       const parent = path.getParentNode();
       // This is overly cautious, we may  want to revisit and normalize more
       // cases here.
-      return /[ex.]/i.test(parent.source) ? parent.source : `${n.n}`;
+      return parent.source;
     }
 
     case "Name": {
