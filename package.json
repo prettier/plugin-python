@@ -14,7 +14,7 @@
     "node": ">=6"
   },
   "dependencies": {
-    "prettier": "prettier/prettier#b63c669ed9821a0e0d6918243ef4f4a091b222a9"
+    "prettier": "prettier/prettier#dbe0758b487be2da74a3f8cf4036472685d75fb0"
   },
   "devDependencies": {
     "eslint": "^4.14.0",
@@ -26,8 +26,9 @@
     "jest-runner-eslint": "^0.3.0"
   },
   "scripts": {
-    "lint": "prettier src/**/*.js --list-different",
-    "test": "jest"
+    "lint": "jest -c jest.eslint.config.js",
+    "test": "jest",
+    "prettier": "prettier --plugin=. --parser=python"
   },
   "jest": {
     "projects": ["<rootDir>/jest.*.config.js"]

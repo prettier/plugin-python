@@ -297,12 +297,9 @@ function genericPrint(path, options, print) {
     }
 
     case "Num": {
-      return path.call(print, "n");
-    }
-
-    case "float":
-    case "int": {
-      return `${n.n}`;
+      // This is overly cautious, we may  want to revisit and normalize more
+      // cases here.
+      return n.source;
     }
 
     case "Name": {
@@ -332,10 +329,15 @@ function genericPrint(path, options, print) {
     }
 
     case "Tuple": {
+      const parent = path.getParentNode();
       const needsParens =
-        ["List", "Tuple"].indexOf(path.getParentNode().ast_type) !== -1;
+        parent.ast_type === "List" || parent.ast_type === "Tuple";
+      const trailingComma = n.elts.length <= 1;
 
-      const elts = join(", ", path.map(print, "elts"));
+      const elts = concat([
+        join(", ", path.map(print, "elts")),
+        trailingComma ? "," : ""
+      ]);
 
       if (needsParens) {
         return concat(["(", elts, ")"]);
