@@ -87,18 +87,18 @@ class DictExportVisitor:
         if isinstance(val, int):
             return {
                 self.ast_type_field: "int",
-                "n": val
+                "n": str(val)
             }
         elif isinstance(val, float):
             return {
                 self.ast_type_field: "float",
-                "n": val
+                "n": str(val)
             }
         elif isinstance(val, complex):
             return {
                 self.ast_type_field: "complex",
-                "n": val.real,
-                "i": val.imag
+                "n": str(val.real),
+                "i": str(val.imag)
             }
 
 

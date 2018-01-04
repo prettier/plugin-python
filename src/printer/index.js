@@ -297,15 +297,9 @@ function genericPrint(path, options, print) {
     }
 
     case "Num": {
-      return path.call(print, "n");
-    }
-
-    case "float":
-    case "int": {
-      const parent = path.getParentNode();
       // This is overly cautious, we may  want to revisit and normalize more
       // cases here.
-      return parent.source;
+      return n.source;
     }
 
     case "Name": {
