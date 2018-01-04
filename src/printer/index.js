@@ -331,8 +331,11 @@ function genericPrint(path, options, print) {
     case "Tuple": {
       const parent = path.getParentNode();
       const needsParens =
-        parent.ast_type === "List" || parent.ast_type === "Tuple";
-      const trailingComma = n.elts.length <= 1;
+        parent.ast_type === "List" ||
+        parent.ast_type === "Tuple" ||
+        parent.ast_type === "Call" ||
+        n.elts.length === 0;
+      const trailingComma = n.elts.length === 1;
 
       const elts = concat([
         join(", ", path.map(print, "elts")),
