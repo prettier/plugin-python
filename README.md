@@ -1,4 +1,4 @@
-# Prettier Python
+# Prettier Python Plugin
 
 ![](https://i.giphy.com/media/GNvOUgBvLzVwA/giphy.webp)
 
@@ -11,7 +11,7 @@ Check back soon :)
 ## Install
 
 ```bash
-yarn add --dev --exact prettier @prettier/python
+yarn add --dev --exact prettier @prettier/plugin-python
 ```
 
 ## Configure
@@ -20,7 +20,7 @@ yarn add --dev --exact prettier @prettier/python
 
 ```json
 {
-  "plugins": ["@prettier/python"]
+  "plugins": ["@prettier/plugin-python"]
 }
 ```
 
