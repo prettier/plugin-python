@@ -139,10 +139,22 @@ function printWithItem(path, print) {
 }
 
 function printIf(path, print) {
-  const n = path.getValue();
+  function printOrElse(path) {
+    const n = path.getValue();
 
-  // TODO: move this somewhere else?
-  function printElse(path) {
+    if (n.orelse && n.orelse.length > 0) {
+      if (n.orelse[0].ast_type === "If") {
+        return concat(path.map(printElseBody, "orelse"));
+      }
+      return concat([
+        hardline,
+        "else:",
+        concat(path.map(printElseBody, "orelse"))
+      ]);
+    }
+  }
+
+  function printElseBody(path) {
     const n = path.getValue();
 
     const parts = [];
@@ -161,14 +173,10 @@ function printIf(path, print) {
       parts.push(indent(concat([hardline, path.call(print)])));
     }
 
-    if (n.orelse && n.orelse.length > 0) {
-      if (n.orelse[0].ast_type === "If") {
-        parts.push(concat(path.map(printElse, "orelse")));
-      } else {
-        parts.push(
-          concat([hardline, "else:", concat(path.map(printElse, "orelse"))])
-        );
-      }
+    const orElse = printOrElse(path);
+
+    if (orElse) {
+      parts.push(orElse);
     }
 
     return concat(parts);
@@ -181,15 +189,10 @@ function printIf(path, print) {
     indent(concat([hardline, printBody(path, print)]))
   ];
 
-  // TODO: duplicated code, see @printElse
-  if (n.orelse && n.orelse.length > 0) {
-    if (n.orelse[0].ast_type === "If") {
-      parts.push(concat(path.map(printElse, "orelse")));
-    } else {
-      parts.push(
-        concat([hardline, "else:", concat(path.map(printElse, "orelse"))])
-      );
-    }
+  const orElse = printOrElse(path);
+
+  if (orElse) {
+    parts.push(orElse);
   }
 
   return concat(parts);
