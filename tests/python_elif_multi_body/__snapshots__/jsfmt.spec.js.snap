@@ -9,6 +9,8 @@ else:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 if condition:
     pass
-assert somethinganother_statement()
+else:
+    assert something
+    another_statement()
 
 `;
