@@ -143,13 +143,13 @@ function printIf(path, print) {
     const n = path.getValue();
 
     if (n.orelse && n.orelse.length > 0) {
-      if (n.orelse[0].ast_type === "If") {
+      if (n.orelse.length === 1 && n.orelse[0].ast_type === "If") {
         return concat(path.map(printElseBody, "orelse"));
       }
       return concat([
         hardline,
         "else:",
-        concat(path.map(printElseBody, "orelse"))
+        indent(concat(path.map(printElseBody, "orelse")))
       ]);
     }
   }
@@ -170,7 +170,7 @@ function printIf(path, print) {
         ])
       );
     } else {
-      parts.push(indent(concat([hardline, path.call(print)])));
+      parts.push(concat([hardline, path.call(print)]));
     }
 
     const orElse = printOrElse(path);
