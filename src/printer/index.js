@@ -12,6 +12,8 @@ const softline = docBuilders.softline;
 const group = docBuilders.group;
 const indent = docBuilders.indent;
 
+const FastPath = require("prettier/src/common/fast-path");
+
 function printPythonString(raw, options) {
   // `rawContent` is the string exactly like it appeared in the input source
   // code, without its enclosing quotes.
@@ -139,48 +141,7 @@ function printWithItem(path, print) {
 }
 
 function printIf(path, print) {
-  function printOrElse(path) {
-    const n = path.getValue();
-
-    if (n.orelse && n.orelse.length > 0) {
-      if (n.orelse.length === 1 && n.orelse[0].ast_type === "If") {
-        return concat(path.map(printElseBody, "orelse"));
-      }
-      return concat([
-        hardline,
-        "else:",
-        indent(concat(path.map(printElseBody, "orelse")))
-      ]);
-    }
-  }
-
-  function printElseBody(path) {
-    const n = path.getValue();
-
-    const parts = [];
-
-    if (n.ast_type === "If") {
-      parts.push(
-        concat([
-          hardline,
-          "elif ",
-          path.call(print, "test"),
-          ":",
-          indent(concat([hardline, printBody(path, print)]))
-        ])
-      );
-    } else {
-      parts.push(concat([hardline, path.call(print)]));
-    }
-
-    const orElse = printOrElse(path);
-
-    if (orElse) {
-      parts.push(orElse);
-    }
-
-    return concat(parts);
-  }
+  let n = path.getValue();
 
   const parts = [
     "if ",
@@ -189,10 +150,29 @@ function printIf(path, print) {
     indent(concat([hardline, printBody(path, print)]))
   ];
 
-  const orElse = printOrElse(path);
+  while (n.orelse && n.orelse.length === 1 && n.orelse[0].ast_type === "If") {
+    n = n.orelse[0];
 
-  if (orElse) {
-    parts.push(orElse);
+    path = new FastPath(n);
+
+    parts.push(
+      hardline,
+      "elif ",
+      path.call(print, "test"),
+      ":",
+      indent(concat([hardline, printBody(path, print)]))
+    );
+  }
+
+  if (n.orelse && n.orelse.length > 0) {
+    parts.push(hardline, "else:");
+
+    for (let i = 0; i < n.orelse.length; i++) {
+      const x = n.orelse[i];
+      path = new FastPath(x);
+
+      parts.push(indent(concat([hardline, path.call(print)])));
+    }
   }
 
   return concat(parts);
