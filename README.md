@@ -23,7 +23,7 @@
   <a href="https://www.npmjs.com/package/@prettier/plugin-python">
     <img alt="npm version" src="https://img.shields.io/npm/v/@prettier/plugin-python.svg?style=flat-square">
   </a>
-  <!-- <a href="https://www.npmjs.com/package/prettier">
+  <!-- <a href="https://www.npmjs.com/package/@prettier-plugin-python">
     <img alt="monthly downloads" src="https://img.shields.io/npm/dm/@prettier/plugin-python.svg?style=flat-square">
   </a> -->
   <a href="#badge">
