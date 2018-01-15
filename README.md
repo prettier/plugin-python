@@ -20,7 +20,7 @@
   <a href="https://travis-ci.org/prettier/prettier-python">
     <img alt="Travis" src="https://img.shields.io/travis/prettier/prettier-python/master.svg?style=flat-square">
   </a>
-  <a href="https://www.npmjs.com/package/prettier">
+  <a href="https://www.npmjs.com/package/@prettier/plugin-python">
     <img alt="npm version" src="https://img.shields.io/npm/v/@prettier/plugin-python.svg?style=flat-square">
   </a>
   <!-- <a href="https://www.npmjs.com/package/prettier">
