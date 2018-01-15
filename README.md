@@ -4,7 +4,7 @@
 
 <div align="center">
 <img alt="Prettier"
-  src="https://raw.githubusercontent.com/prettier/prettier-logo/master/images/prettier-icon-light.png">
+  src="https://cdn.rawgit.com/prettier/prettier-logo/master/images/prettier-icon-light.svg">
 <img alt="Python"
   hspace="25"
   height="210"
