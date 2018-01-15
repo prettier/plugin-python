@@ -8,7 +8,7 @@
 <img alt="Python"
   hspace="25"
   height="210"
-  src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Python.svg/240px-Python.svg.png">
+  src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/200px-Python-logo-notext.svg.png">
 </div>
 
 <h2 align="center">Prettier Python Plugin</h2>
