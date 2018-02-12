@@ -9,6 +9,7 @@ const normalizeOptions = require("prettier/src/main/options").normalize;
 const AST_COMPARE = process.env["AST_COMPARE"];
 
 function run_spec(dirname, parsers, options) {
+  global.isInTest = true;
   options = Object.assign(
     {
       plugins: ["."],

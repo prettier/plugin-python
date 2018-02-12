@@ -702,8 +702,20 @@ function genericPrint(path, options, print) {
       return group(concat(parts));
     }
 
+    case "Yield": {
+      return group(concat(["yield", line, path.call(print, "value")]));
+    }
+
+    case "YieldFrom": {
+      return group(concat(["yield from", line, path.call(print, "value")]));
+    }
+
     /* istanbul ignore next */
     default:
+      if (global.isInTest) {
+        throw "Unknown Python node: " +
+          JSON.stringify(n, null /*replacer*/, 4 /*space*/);
+      }
       // eslint-disable-next-line no-console
       console.error("Unknown Python node:", n);
       return n.source;
