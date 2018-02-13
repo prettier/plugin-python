@@ -13,7 +13,7 @@ const group = docBuilders.group;
 const indent = docBuilders.indent;
 const ifBreak = docBuilders.ifBreak;
 
-const unenclosedSpace = concat([ifBreak(" \\"), line]);
+const escapedLine = concat([ifBreak(" \\"), line]);
 
 function printPythonString(raw, options) {
   // `rawContent` is the string exactly like it appeared in the input source
@@ -709,7 +709,7 @@ function genericPrint(path, options, print) {
       return group(
         concat([
           "yield",
-          indent(concat([unenclosedSpace, path.call(print, "value")]))
+          indent(concat([escapedLine, path.call(print, "value")]))
         ])
       );
     }
@@ -718,7 +718,7 @@ function genericPrint(path, options, print) {
       return group(
         concat([
           "yield from",
-          indent(concat([unenclosedSpace, path.call(print, "value")]))
+          indent(concat([escapedLine, path.call(print, "value")]))
         ])
       );
     }
