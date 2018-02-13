@@ -11,6 +11,9 @@ const line = docBuilders.line;
 const softline = docBuilders.softline;
 const group = docBuilders.group;
 const indent = docBuilders.indent;
+const ifBreak = docBuilders.ifBreak;
+
+const unenclosedSpace = concat([ifBreak(" \\"), line]);
 
 function printPythonString(raw, options) {
   // `rawContent` is the string exactly like it appeared in the input source
@@ -703,11 +706,21 @@ function genericPrint(path, options, print) {
     }
 
     case "Yield": {
-      return group(concat(["yield", line, path.call(print, "value")]));
+      return group(
+        concat([
+          "yield",
+          indent(concat([unenclosedSpace, path.call(print, "value")]))
+        ])
+      );
     }
 
     case "YieldFrom": {
-      return group(concat(["yield from", line, path.call(print, "value")]));
+      return group(
+        concat([
+          "yield from",
+          indent(concat([unenclosedSpace, path.call(print, "value")]))
+        ])
+      );
     }
 
     /* istanbul ignore next */
