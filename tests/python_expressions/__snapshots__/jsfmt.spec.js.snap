@@ -392,12 +392,10 @@ a ** 2 ** 2
 a.b[0] ** 2
 a.b[0].read()[1][2].foo().spam()[0].bar ** 2
 l[start:end] = l2
-
 # l[::] = l2
 # a = \`s\`
 # a = \`1 + 2 + f(3, 4)\`
 [a, b] = c
-
 # (a, b) = c
 [a, (b, c), d] = e
 a, (b, c), d = e
@@ -407,7 +405,6 @@ a, (b, c), d = e
 
 l = func()
 l = func(10)
-
 # l = func(10, 12, a, b=c, *args)
 # l = func(10, 12, a, b=c, **kwargs)
 # l = func(10, 12, a, b=c, *args, **kwargs)
@@ -461,9 +458,9 @@ a is not b
 a in b
 a is b
 not a
+# We don't wrap this because it doesn't make sense with a 4-space indent.
 not my_long_variable_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 3 < x < 5
-
 # (3 < x) < 5
 a < b < c < d
 
@@ -477,30 +474,23 @@ c = d
 
 a.b = 2
 x = a.b
-
 # l[:]
 # l[::]
 l[1:2]
-
 # l[1:]
 l[:2]
-
 # l[1::]
 # l[:1:]
 l[::1]
-
 # l[1:2:]
 l[:1:2]
 l[1::2]
 l[0:1:2]
-
 # a.b.l[:]
 a.b.l[1:2]
-
 # a.b.l[1:]
 # a.b.l[:2]
 a.b.l[0:1:2]
-
 # a[1:2:3, 100]
 # a[:2:3, 100]
 # a[1::3, 100,]
@@ -532,7 +522,6 @@ from os import path, system
 
 from os import path, system
 from os import path as P, system as S
-
 # from os import (path as P, system as S,)
 from os import *
 
@@ -589,6 +578,7 @@ try:
     b
 except NameError:
     pass
+
 
 # try:
 #     a
@@ -674,6 +664,7 @@ def f(*args):
 def f(**kwargs):
     return 1
 
+
 # def f(t=()): pass
 # def f(a, b, (c, d), e): pass
 # def f(a, b, (c, (d, e), f, (g, h))): pass
@@ -710,6 +701,7 @@ def foo():
     a = 1
     """bar"""
     return a
+
 
 # def foo():
 #     """doc"""; print 1
