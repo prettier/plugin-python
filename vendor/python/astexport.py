@@ -1,6 +1,7 @@
 import ast
 import fileinput
 import json
+import tokenize
 
 import asttokens
 
@@ -12,7 +13,7 @@ def export_json(atok, pretty_print=False):
             'value': token.string,
             'start': token.startpos,
             'end': token.endpos,
-        } for token in atok.tokens if token.type == 57]
+        } for token in atok.tokens if token.type == tokenize.COMMENT]
     return json.dumps(
         dict,
         indent=4 if pretty_print else None,
