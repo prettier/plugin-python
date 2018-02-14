@@ -14,6 +14,7 @@ const indent = docBuilders.indent;
 const ifBreak = docBuilders.ifBreak;
 
 const escapedLine = concat([ifBreak(" \\"), line]);
+const escapedSoftline = concat([ifBreak(" \\"), softline]);
 
 function indentConcat(docs) {
   return indent(concat(docs));
@@ -304,17 +305,15 @@ function genericPrint(path, options, print) {
       }
 
       parts.push(
-        group(concat(def)),
-        group(
-          concat([
-            "(",
-            indent(concat([softline, path.call(print, "args")])),
-            softline,
-            ")"
-          ])
-        ),
+        groupConcat(def),
+        groupConcat([
+          "(",
+          indentConcat([softline, path.call(print, "args")]),
+          softline,
+          ")"
+        ]),
         ":",
-        indent(concat([hardline, printBody(path, print)]))
+        indentConcat([hardline, printBody(path, print)])
       );
 
       return concat(parts);
@@ -344,7 +343,16 @@ function genericPrint(path, options, print) {
         parts.push(concat(["**", path.call(print, "kwarg")]));
       }
 
-      return join(concat([", ", softline]), parts);
+      const parent = path.getParentNode();
+      const parentType = parent.ast_type;
+      const knownParentTypes = ["FunctionDef", "AsyncFunctionDef", "Lambda"];
+      if (knownParentTypes.indexOf(parentType) === -1) {
+        throw "Unknown parent of arguments: " + parentType;
+      }
+
+      const relevantLine = parentType === "Lambda" ? escapedLine : line;
+
+      return concat([join(concat([",", relevantLine]), parts), trailingComma]);
     }
 
     case "arg": {
@@ -726,15 +734,19 @@ function genericPrint(path, options, print) {
     }
 
     case "Lambda": {
-      return group(
-        concat([
-          "lambda",
-          " ",
-          path.call(print, "args"),
-          ": ",
-          path.call(print, "body")
+      return groupConcat([
+        "lambda",
+        indentConcat([
+          // Add a group here so that we first try to split the body onto its own line
+          groupConcat([
+            // If this is still too long, we'll split the args onto their own lines.
+            indentConcat([escapedLine, path.call(print, "args")]),
+            escapedSoftline,
+            ":"
+          ]),
+          indentConcat([escapedLine, path.call(print, "body")])
         ])
-      );
+      ]);
     }
 
     case "keyword": {
