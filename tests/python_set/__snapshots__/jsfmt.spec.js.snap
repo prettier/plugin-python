@@ -1,0 +1,97 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`set.py 1`] = `
+a = {
+    "a",
+    'b'
+}
+
+a = {
+    "a",
+    'b',
+    'c',
+    'd',
+    'e',
+    'f',
+    'g',
+    'hhhhhhhhhhhhhh',
+}
+
+a = {'aaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'bbbbbbbbbbbbbbbbbbbbbbbbbbbb', 'cccccccccccccccccccccccccccc', 'dddddddddddddddddddddddddddd'}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+a = {"a", "b"}
+
+a = {"a", "b", "c", "d", "e", "f", "g", "hhhhhhhhhhhhhh"}
+
+a = {
+    "aaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "bbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "cccccccccccccccccccccccccccc",
+    "dddddddddddddddddddddddddddd"
+}
+
+`;
+
+exports[`set.py 2`] = `
+a = {
+    "a",
+    'b'
+}
+
+a = {
+    "a",
+    'b',
+    'c',
+    'd',
+    'e',
+    'f',
+    'g',
+    'hhhhhhhhhhhhhh',
+}
+
+a = {'aaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'bbbbbbbbbbbbbbbbbbbbbbbbbbbb', 'cccccccccccccccccccccccccccc', 'dddddddddddddddddddddddddddd'}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+a = {"a", "b"}
+
+a = {"a", "b", "c", "d", "e", "f", "g", "hhhhhhhhhhhhhh"}
+
+a = {
+    "aaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "bbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "cccccccccccccccccccccccccccc",
+    "dddddddddddddddddddddddddddd",
+}
+
+`;
+
+exports[`set.py 3`] = `
+a = {
+    "a",
+    'b'
+}
+
+a = {
+    "a",
+    'b',
+    'c',
+    'd',
+    'e',
+    'f',
+    'g',
+    'hhhhhhhhhhhhhh',
+}
+
+a = {'aaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'bbbbbbbbbbbbbbbbbbbbbbbbbbbb', 'cccccccccccccccccccccccccccc', 'dddddddddddddddddddddddddddd'}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+a = {"a", "b"}
+
+a = {"a", "b", "c", "d", "e", "f", "g", "hhhhhhhhhhhhhh"}
+
+a = {
+    "aaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "bbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "cccccccccccccccccccccccccccc",
+    "dddddddddddddddddddddddddddd"
+}
+
+`;

@@ -779,6 +779,10 @@ function genericPrint(path, options, print) {
       ]);
     }
 
+    case "Set": {
+      return printListLike("{", path.map(print, "elts"), trailingComma, "}");
+    }
+
     /* istanbul ignore next */
     default:
       // eslint-disable-next-line no-console
