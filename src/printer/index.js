@@ -260,6 +260,20 @@ function tuplePreferSkipParens(node, path) {
   return false;
 }
 
+function printComprehensionLike(open, element, generators, close) {
+  return groupConcat([
+    open,
+    indentConcat([
+      // This line needs to be outside the group below so that that group starts
+      // on a newline (in case the previous line is very long).
+      softline,
+      groupConcat([element, line, join(line, generators)])
+    ]),
+    softline,
+    close
+  ]);
+}
+
 function genericPrint(path, options, print) {
   const n = path.getValue();
   if (!n) {
@@ -593,14 +607,33 @@ function genericPrint(path, options, print) {
     }
 
     case "ListComp": {
-      return group(
-        concat([
-          "[",
-          path.call(print, "elt"),
-          line,
-          join(line, path.map(print, "generators")),
-          "]"
-        ])
+      return printComprehensionLike(
+        "[",
+        path.call(print, "elt"),
+        path.map(print, "generators"),
+        "]"
+      );
+    }
+
+    case "SetComp": {
+      return printComprehensionLike(
+        "{",
+        path.call(print, "elt"),
+        path.map(print, "generators"),
+        "}"
+      );
+    }
+
+    case "DictComp": {
+      return printComprehensionLike(
+        "{",
+        groupConcat([
+          path.call(print, "key"),
+          ":",
+          indentConcat([line, path.call(print, "value")])
+        ]),
+        path.map(print, "generators"),
+        "}"
       );
     }
 
@@ -608,10 +641,13 @@ function genericPrint(path, options, print) {
       const parts = [printForIn(path, print)];
 
       if (n.ifs.length > 0) {
-        parts.push(line, "if", line, join(line, path.map(print, "ifs")));
+        parts.push(
+          line,
+          groupConcat(["if", line, join(line, path.map(print, "ifs"))])
+        );
       }
 
-      return concat(parts);
+      return groupConcat(parts);
     }
 
     case "BinOp": {
