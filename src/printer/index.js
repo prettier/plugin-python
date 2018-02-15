@@ -13,8 +13,8 @@ const group = docBuilders.group;
 const indent = docBuilders.indent;
 
 function printPythonString(raw, options) {
-  // `rawContent` is the string exactly like it appeared in the input source
-  // code, without its enclosing quotes.
+  // `raw` is the string exactly like it appeared in the input source
+  // code, with its enclosing quotes.
 
   const modifierResult = /^\w+/.exec(raw);
   const modifier = modifierResult ? modifierResult[0] : "";
@@ -27,6 +27,21 @@ function printPythonString(raw, options) {
   rawContent = hasTripleQuote
     ? rawContent.slice(3, -3)
     : rawContent.slice(1, -1);
+
+  // `rawContent` is (now) like `raw`, but without the enclosing quotes
+  // or modifiers.
+
+  // Before we go further, determine if this is a "complicated" string.
+  // Primarily this is looking for strings that rely on python's
+  // auto-concatenation behavior, which are harder to format properly.
+  // For now, we'll just leave these strings as they are.
+  const openingQuote = hasTripleQuote
+    ? raw.slice(modifier.length, modifier.length + 3)
+    : raw.slice(modifier.length, modifier.length + 1);
+
+  if (hasMultipleStrings(rawContent, openingQuote)) {
+    return raw;
+  }
 
   const double = { quote: '"', regex: /"/g };
   const single = { quote: "'", regex: /'/g };
@@ -64,6 +79,18 @@ function printPythonString(raw, options) {
   // unnecessary escapes (such as in `"\'"`). Always using `makeString` makes
   // sure that we consistently output the minimum amount of escaped quotes.
   return modifier + util.makeString(rawContent, enclosingQuote);
+}
+
+function hasMultipleStrings(rawContent, openingQuote) {
+  for (let startSearchIndex = 0, found = -1; ; startSearchIndex = found + 1) {
+    found = rawContent.indexOf(openingQuote, startSearchIndex);
+    if (found === -1) {
+      return false;
+    }
+    if (found === 0 || (found > 0 && rawContent[found - 1] !== "\\")) {
+      return true;
+    }
+  }
 }
 
 function printTry(print, path) {
