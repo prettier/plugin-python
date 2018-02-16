@@ -638,7 +638,13 @@ function genericPrint(path, options, print) {
     }
 
     case "UnaryOp": {
-      return concat([path.call(print, "op"), path.call(print, "operand")]);
+      const separator = n.op.ast_type === "Not" ? line : "";
+
+      return groupConcat([
+        path.call(print, "op"),
+        separator,
+        path.call(print, "operand")
+      ]);
     }
 
     case "ListComp": {

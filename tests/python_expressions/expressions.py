@@ -115,6 +115,7 @@ a not in b
 a is not b
 a in b
 a is b
+not a
 3 < x < 5
 # (3 < x) < 5
 a < b < c < d
