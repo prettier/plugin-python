@@ -607,10 +607,11 @@ function genericPrint(path, options, print) {
     }
 
     case "Subscript": {
-      return concat([
+      return groupConcat([
         path.call(print, "value"),
         "[",
-        path.call(print, "slice"),
+        indentConcat([softline, path.call(print, "slice")]),
+        softline,
         "]"
       ]);
     }
@@ -620,21 +621,16 @@ function genericPrint(path, options, print) {
     }
 
     case "Slice": {
-      const parts = [path.call(print, "lower")];
+      const stepParts = n.step ? [":", softline, path.call(print, "step")] : [];
 
-      if (n.upper) {
-        parts.push(path.call(print, "upper"));
-      }
-
-      if (n.step) {
-        if (!n.upper) {
-          parts.push("");
-        }
-
-        parts.push(path.call(print, "step"));
-      }
-
-      return join(":", parts);
+      return groupConcat(
+        [
+          path.call(print, "lower"),
+          ":",
+          softline,
+          path.call(print, "upper")
+        ].concat(stepParts)
+      );
     }
 
     case "UnaryOp": {
