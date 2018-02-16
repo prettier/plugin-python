@@ -19,7 +19,6 @@ foo((x for x in bar), True)
 foo(True, (x for x in bar))
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 (x for x in range(100))
-
 (x for x in range(100) if x % 2 == 0)
 
 my_long_variable_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa = (
@@ -69,7 +68,6 @@ foo((x for x in bar), True)
 foo(True, (x for x in bar))
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 (x for x in range(100))
-
 (x for x in range(100) if x % 2 == 0)
 
 my_long_variable_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa = (

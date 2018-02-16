@@ -5,7 +5,6 @@ assert 3 + 3
 assert False, 'message'
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 assert 3 + 3
-
 assert False, "message"
 
 `;
@@ -15,7 +14,6 @@ assert 3 + 3
 assert False, 'message'
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 assert 3 + 3
-
 assert False, "message"
 
 `;

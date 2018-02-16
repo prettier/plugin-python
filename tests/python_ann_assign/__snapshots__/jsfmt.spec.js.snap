@@ -9,7 +9,6 @@ my_long_var_aaaaaaaaaaaaaaaaaaaaaaaaaa: MyLongTypeAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 my_long_var_aaaaaaaaaaaaaaaaaaaaaaaaaa: MyLongTypeAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA = 1
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 a: str
-
 a: bool = True
 
 my_long_var_aaaaaaaaaaaaaaaaaaaaaaaaaa: \\
