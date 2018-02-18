@@ -52,7 +52,7 @@ To test it out on a Python file:
 ## Install
 
 ```bash
-yarn add --dev --exact prettier @prettier/plugin-python
+yarn add --dev --exact prettier @prettier/python
 ```
 
 ## Use
