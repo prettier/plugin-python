@@ -15,6 +15,14 @@ const ifBreak = docBuilders.ifBreak;
 
 const escapedLine = concat([ifBreak(" \\"), line]);
 
+function indentConcat(docs) {
+  return indent(concat(docs));
+}
+
+function groupConcat(docs) {
+  return group(concat(docs));
+}
+
 function printPythonString(raw, options) {
   // `rawContent` is the string exactly like it appeared in the input source
   // code, without its enclosing quotes.
@@ -201,6 +209,57 @@ function printIf(path, print) {
   return concat(parts);
 }
 
+function printListLike(openDoc, elements, trailingComma, closeDoc) {
+  return groupConcat([
+    openDoc,
+    indentConcat([
+      softline,
+      join(concat([",", line]), elements),
+      trailingComma
+    ]),
+    softline,
+    closeDoc
+  ]);
+}
+
+function tuplePreferSkipParens(node, path) {
+  if (node.elts.length === 0) {
+    // Don't skip parens if we don't have any elements
+    return false;
+  }
+
+  const parent = path.getParentNode();
+  const preferSkipParensParentTypes = new Set(["Return", "Index", "Print"]);
+  if (preferSkipParensParentTypes.has(parent.ast_type)) {
+    // We know we want to try to skip parens with this parent type
+    return true;
+  }
+
+  if (parent.ast_type === "Assign") {
+    // Skip if we're on the left (in the targets) or we're on the right (the value) and there's a tuple on the left
+    if (parent.targets.indexOf(node) !== -1) {
+      return true;
+    }
+    if (parent.value !== node) {
+      // Quick sanity check, if we're not on the left or right, we must be confused.
+      throw "Unable to find node in Assign parent";
+    }
+    const anyTargetIsTuple = parent.targets.reduce(
+      (anyIsTuple, node) => anyIsTuple || node.ast_type === "Tuple",
+      false
+    );
+    // We want to skip the parens if we have a tuple on the left side.
+    return anyTargetIsTuple;
+  }
+
+  if (parent.ast_type === "For") {
+    // Skip parens iff this is the variable (target) part
+    return parent.target === node;
+  }
+
+  return false;
+}
+
 function genericPrint(path, options, print) {
   const n = path.getValue();
   if (!n) {
@@ -214,6 +273,10 @@ function genericPrint(path, options, print) {
   if (tokens.hasOwnProperty(n.ast_type)) {
     return tokens[n.ast_type];
   }
+
+  const trailingComma = concat(
+    options.trailingComma === "none" ? [] : [ifBreak(",")]
+  );
 
   switch (n.ast_type) {
     case "Module": {
@@ -358,34 +421,29 @@ function genericPrint(path, options, print) {
     }
 
     case "Tuple": {
-      const parent = path.getParentNode();
-      const needsParens =
-        parent.ast_type === "List" ||
-        parent.ast_type === "Tuple" ||
-        parent.ast_type === "Call" ||
-        n.elts.length === 0;
-      const trailingComma = n.elts.length === 1;
+      const forceTrailingComma = n.elts.length === 1;
+      const relevantTrailingComma = forceTrailingComma ? "," : trailingComma;
 
-      const elts = concat([
-        join(", ", path.map(print, "elts")),
-        trailingComma ? "," : ""
-      ]);
+      const preferSkipParens = tuplePreferSkipParens(n, path);
+      const openParen = preferSkipParens ? ifBreak("(") : "(";
+      const closeParen = preferSkipParens ? ifBreak(")") : ")";
 
-      if (needsParens) {
-        return concat(["(", elts, ")"]);
-      }
-
-      return elts;
+      return printListLike(
+        openParen,
+        path.map(print, "elts"),
+        relevantTrailingComma,
+        closeParen
+      );
     }
 
     case "List": {
-      return concat(["[", join(", ", path.map(print, "elts")), "]"]);
+      return printListLike("[", path.map(print, "elts"), trailingComma, "]");
     }
 
     case "Assign": {
       return group(
         concat([
-          join(", ", path.map(print, "targets")),
+          join(" = ", path.map(print, "targets")),
           " = ",
           path.call(print, "value")
         ])
@@ -406,9 +464,11 @@ function genericPrint(path, options, print) {
       const keys = path.map(print, "keys");
       const values = path.map(print, "values");
 
-      const pairs = keys.map((k, i) => concat([softline, k, ": ", values[i]]));
+      const pairs = keys.map((k, i) =>
+        groupConcat([k, ":", indentConcat([line, values[i]])])
+      );
 
-      return concat(["{", indent(join(",", pairs)), softline, "}"]);
+      return printListLike("{", pairs, trailingComma, "}");
     }
 
     case "ClassDef": {
@@ -706,21 +766,17 @@ function genericPrint(path, options, print) {
     }
 
     case "Yield": {
-      return group(
-        concat([
-          "yield",
-          indent(concat([escapedLine, path.call(print, "value")]))
-        ])
-      );
+      return groupConcat([
+        "yield",
+        indentConcat([escapedLine, path.call(print, "value")])
+      ]);
     }
 
     case "YieldFrom": {
-      return group(
-        concat([
-          "yield from",
-          indent(concat([escapedLine, path.call(print, "value")]))
-        ])
-      );
+      return groupConcat([
+        "yield from",
+        indentConcat([escapedLine, path.call(print, "value")])
+      ]);
     }
 
     /* istanbul ignore next */

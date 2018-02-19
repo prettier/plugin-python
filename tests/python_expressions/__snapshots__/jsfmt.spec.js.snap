@@ -456,7 +456,7 @@ l = [i for j in range(10) for i in range(j) if j % 2 == 0]
 
 l = [i for j in range(10) for i in range(j) if j % 2 == 0 and i % 2 == 0]
 
-l = {a: b,"c": 0}
+l = {a: b, "c": 0}
 
 l = {}
 
@@ -1195,7 +1195,7 @@ l = [i for j in range(10) for i in range(j) if j % 2 == 0 and i % 2 == 0]
 # l = [i for j in ( j*2 for j in [ k*3 for k in range(10) ] ) ]
 # l = f(i for i in j)
 
-l = {a: b,"c": 0}
+l = {a: b, "c": 0}
 
 l = {}
 
