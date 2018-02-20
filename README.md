@@ -73,6 +73,13 @@ prettier --write "**/*.py"
           Patrick Arminio
         </a>
       </td>
+      <td align="center">
+        <a href="https://github.com/FuegoFro">
+          <img width="150" height="150" src="https://github.com/FuegoFro.png?v=3&s=150">
+          </br>
+          Danny Weinberg
+        </a>
+      </td>
     </tr>
   <tbody>
 </table>
