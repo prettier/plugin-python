@@ -138,17 +138,27 @@ function printArguments(print, path, argsKey, defaultsKey) {
     const next = merge[i + 1];
 
     const part = [path.call(print, argsKey, currentArgument)];
+    const argNode = path.call(path => path.getNode(), argsKey, currentArgument);
 
     currentArgument += 1;
 
     if (next && next.isDefault) {
-      part.push("=", path.call(print, defaultsKey, currentDefault));
+      const equal = argNode.annotation ? " =" : "=";
+      const appropriateLine = argNode.annotation ? line : softline;
+
+      part.push(
+        equal,
+        indentConcat([
+          appropriateLine,
+          path.call(print, defaultsKey, currentDefault)
+        ])
+      );
 
       i += 1;
       currentDefault += 1;
     }
 
-    parts.push(concat(part));
+    parts.push(groupConcat(part));
   }
 
   return parts;
@@ -352,10 +362,14 @@ function genericPrint(path, options, print) {
           indentConcat([softline, path.call(print, "args")]),
           softline,
           ")"
-        ]),
-        ":",
-        indentConcat([hardline, printBody(path, print)])
+        ])
       );
+
+      if (n.returns) {
+        parts.push(" -> ", path.call(print, "returns"));
+      }
+
+      parts.push(":", indentConcat([hardline, printBody(path, print)]));
 
       return concat(parts);
     }
@@ -397,7 +411,10 @@ function genericPrint(path, options, print) {
     }
 
     case "arg": {
-      return n.arg;
+      const annotationParts = n.annotation
+        ? [":", indentConcat([line, path.call(print, "annotation")])]
+        : [];
+      return groupConcat([n.arg].concat(annotationParts));
     }
 
     case "Expr": {
@@ -507,6 +524,18 @@ function genericPrint(path, options, print) {
         "= ",
         path.call(print, "value")
       ]);
+    }
+
+    case "AnnAssign": {
+      const valueParts = n.value ? [" = ", path.call(print, "value")] : [];
+
+      return groupConcat(
+        [
+          path.call(print, "target"),
+          ":",
+          indentConcat([escapedLine, path.call(print, "annotation")])
+        ].concat(valueParts)
+      );
     }
 
     case "Dict": {
@@ -881,6 +910,10 @@ function genericPrint(path, options, print) {
 
     case "Set": {
       return printListLike("{", path.map(print, "elts"), trailingComma, "}");
+    }
+
+    case "Ellipsis": {
+      return "...";
     }
 
     /* istanbul ignore next */
