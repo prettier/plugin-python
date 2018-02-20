@@ -677,6 +677,26 @@ function genericPrint(path, options, print) {
       );
     }
 
+    case "GeneratorExp": {
+      // If this is the only argument to a function, we can skip the parens
+      // around it.
+      const parent = path.getParentNode();
+      const skipParens =
+        parent.ast_type === "Call" &&
+        parent.args.length === 1 &&
+        parent.args[0] === n;
+
+      const open = skipParens ? "" : "(";
+      const close = skipParens ? "" : ")";
+
+      return printComprehensionLike(
+        open,
+        path.call(print, "elt"),
+        path.map(print, "generators"),
+        close
+      );
+    }
+
     case "comprehension": {
       const parts = [printForIn(path, print)];
 
