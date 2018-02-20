@@ -638,7 +638,10 @@ function genericPrint(path, options, print) {
     }
 
     case "UnaryOp": {
-      const separator = n.op.ast_type === "Not" ? line : "";
+      // We don't use a line or escapedLine with Not because wrapping and
+      // indenting doesn't make sense with a 4-space indent, since the operand
+      // will be starting at the same column anyway.
+      const separator = n.op.ast_type === "Not" ? " " : "";
 
       return groupConcat([
         path.call(print, "op"),
