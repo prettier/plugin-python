@@ -153,12 +153,13 @@ class ASTTokens(object):
   def find_token(self, start_token, tok_type, tok_str=None, reverse=False):
     """
     Looks for the first token, starting at start_token, that matches tok_type and, if given, the
-    token string. Searches backwards if reverse is True.
+    token string. Searches backwards if reverse is True. Returns ENDMARKER token if not found (you
+    can check it with `token.ISEOF(t.type)`.
     """
     t = start_token
     advance = self.prev_token if reverse else self.next_token
     while not match_token(t, tok_type, tok_str) and not token.ISEOF(t.type):
-      t = advance(t)
+      t = advance(t, include_extra=True)
     return t
 
   def token_range(self, first_token, last_token, include_extra=False):
