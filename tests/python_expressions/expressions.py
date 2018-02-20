@@ -115,6 +115,9 @@ a not in b
 a is not b
 a in b
 a is b
+not a
+# We don't wrap this because it doesn't make sense with a 4-space indent.
+not my_long_variable_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 3 < x < 5
 # (3 < x) < 5
 a < b < c < d
