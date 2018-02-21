@@ -1,0 +1,158 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`blank_lines_indented.py 1`] = `
+def f():
+    a = 1
+    a = 1
+
+    a = 1
+    a = 1
+
+
+    a = 1
+    a = 1
+
+
+
+    a = 1
+    a = 1
+    def g():
+        pass
+
+    def g():
+        pass
+
+
+    def g():
+        pass
+    a = 1
+
+    a = 1
+    class h:
+        pass
+
+    class h:
+        pass
+
+
+    class h:
+        pass
+    a = 1
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+def f():
+    a = 1
+    a = 1
+
+    a = 1
+    a = 1
+
+    a = 1
+    a = 1
+
+    a = 1
+    a = 1
+
+    def g():
+        pass
+
+    def g():
+        pass
+
+    def g():
+        pass
+
+    a = 1
+
+    a = 1
+
+    class h:
+        pass
+
+    class h:
+        pass
+
+    class h:
+        pass
+
+    a = 1
+
+`;
+
+
+exports[`blank_lines_indented.py 2`] = `
+def f():
+    a = 1
+    a = 1
+
+    a = 1
+    a = 1
+
+
+    a = 1
+    a = 1
+
+
+
+    a = 1
+    a = 1
+    def g():
+        pass
+
+    def g():
+        pass
+
+
+    def g():
+        pass
+    a = 1
+
+    a = 1
+    class h:
+        pass
+
+    class h:
+        pass
+
+
+    class h:
+        pass
+    a = 1
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+def f():
+    a = 1
+    a = 1
+
+    a = 1
+    a = 1
+
+    a = 1
+    a = 1
+
+    a = 1
+    a = 1
+
+    def g():
+        pass
+
+    def g():
+        pass
+
+    def g():
+        pass
+
+    a = 1
+
+    a = 1
+
+    class h:
+        pass
+
+    class h:
+        pass
+
+    class h:
+        pass
+
+    a = 1
+
+`;

@@ -3,3 +3,7 @@ def example(first):
         return
 
     return first
+
+
+def foo():
+    return my_long_value_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa

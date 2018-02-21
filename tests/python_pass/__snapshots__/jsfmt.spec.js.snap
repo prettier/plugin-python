@@ -9,6 +9,7 @@ def x(): pass
 class Client:
     pass
 
+
 def x():
     pass
 
@@ -22,6 +23,7 @@ def x(): pass
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 class Client:
     pass
+
 
 def x():
     pass

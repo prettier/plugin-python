@@ -1,0 +1,389 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`blank_lines_top_level.py 1`] = `
+import a
+import b
+
+import c
+import d
+
+
+import f
+A = 1
+A = 1
+
+A = 1
+A = 1
+
+
+A = 1
+
+
+
+A = 1
+def a():
+    pass
+def a():
+    pass
+
+def a():
+    pass
+
+
+
+def a():
+    pass
+A = 1
+
+
+def a():
+    pass
+
+A = 1
+
+
+def a():
+    pass
+
+A = 1
+
+
+def a():
+    pass
+
+
+
+A = 1
+
+A = 1
+class a:
+    pass
+class a:
+    pass
+
+class a:
+    pass
+
+
+
+class a:
+    pass
+A = 1
+
+
+class a:
+    pass
+
+A = 1
+
+
+class a:
+    pass
+
+A = 1
+
+
+class a:
+    pass
+
+
+
+A = 1
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+import a
+import b
+
+import c
+import d
+
+import f
+
+A = 1
+A = 1
+
+A = 1
+A = 1
+
+
+A = 1
+
+
+A = 1
+
+
+def a():
+    pass
+
+
+def a():
+    pass
+
+
+def a():
+    pass
+
+
+def a():
+    pass
+
+
+A = 1
+
+
+def a():
+    pass
+
+
+A = 1
+
+
+def a():
+    pass
+
+
+A = 1
+
+
+def a():
+    pass
+
+
+A = 1
+
+A = 1
+
+
+class a:
+    pass
+
+
+class a:
+    pass
+
+
+class a:
+    pass
+
+
+class a:
+    pass
+
+
+A = 1
+
+
+class a:
+    pass
+
+
+A = 1
+
+
+class a:
+    pass
+
+
+A = 1
+
+
+class a:
+    pass
+
+
+A = 1
+
+`;
+
+exports[`blank_lines_top_level.py 2`] = `
+import a
+import b
+
+import c
+import d
+
+
+import f
+A = 1
+A = 1
+
+A = 1
+A = 1
+
+
+A = 1
+
+
+
+A = 1
+def a():
+    pass
+def a():
+    pass
+
+def a():
+    pass
+
+
+
+def a():
+    pass
+A = 1
+
+
+def a():
+    pass
+
+A = 1
+
+
+def a():
+    pass
+
+A = 1
+
+
+def a():
+    pass
+
+
+
+A = 1
+
+A = 1
+class a:
+    pass
+class a:
+    pass
+
+class a:
+    pass
+
+
+
+class a:
+    pass
+A = 1
+
+
+class a:
+    pass
+
+A = 1
+
+
+class a:
+    pass
+
+A = 1
+
+
+class a:
+    pass
+
+
+
+A = 1
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+import a
+import b
+
+import c
+import d
+
+import f
+
+A = 1
+A = 1
+
+A = 1
+A = 1
+
+
+A = 1
+
+
+A = 1
+
+
+def a():
+    pass
+
+
+def a():
+    pass
+
+
+def a():
+    pass
+
+
+def a():
+    pass
+
+
+A = 1
+
+
+def a():
+    pass
+
+
+A = 1
+
+
+def a():
+    pass
+
+
+A = 1
+
+
+def a():
+    pass
+
+
+A = 1
+
+A = 1
+
+
+class a:
+    pass
+
+
+class a:
+    pass
+
+
+class a:
+    pass
+
+
+class a:
+    pass
+
+
+A = 1
+
+
+class a:
+    pass
+
+
+A = 1
+
+
+class a:
+    pass
+
+
+A = 1
+
+
+class a:
+    pass
+
+
+A = 1
+
+`;

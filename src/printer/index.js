@@ -9,6 +9,7 @@ const join = docBuilders.join;
 const hardline = docBuilders.hardline;
 const line = docBuilders.line;
 const softline = docBuilders.softline;
+const literalline = docBuilders.literalline;
 const group = docBuilders.group;
 const indent = docBuilders.indent;
 const ifBreak = docBuilders.ifBreak;
@@ -164,8 +165,147 @@ function printArguments(print, path, argsKey, defaultsKey) {
   return parts;
 }
 
-function printBody(path, print) {
-  return join(concat([hardline, hardline]), path.map(print, "body"));
+function countNumPrecedingChars(text, start, char, skipChar) {
+  skipChar = skipChar || "";
+  let count = 0;
+  for (
+    let indexToCheckNext = start - 1;
+    indexToCheckNext >= 0;
+    indexToCheckNext--
+  ) {
+    if (text[indexToCheckNext] === char) {
+      count++;
+    } else if (text[indexToCheckNext] !== skipChar) {
+      // If this is neither the target char nor the char we should skip,
+      // then we're done.
+      break;
+    }
+  }
+  return count;
+}
+
+function isBorderingFunctionOrClass(prevNode, node) {
+  const nodeTypesWthiTwoBlankLinesOnBothSides = [
+    "ClassDef",
+    "FunctionDef",
+    "AsyncFunctionDef"
+  ];
+  return (
+    nodeTypesWthiTwoBlankLinesOnBothSides.includes(node.ast_type) ||
+    nodeTypesWthiTwoBlankLinesOnBothSides.includes(prevNode.ast_type)
+  );
+}
+
+function isImport(node) {
+  return node.ast_type === "Import" || node.ast_type === "ImportFrom";
+}
+
+function upperBound(current, bound) {
+  return current > bound ? bound : current;
+}
+
+function lowerBound(current, bound) {
+  return current < bound ? bound : current;
+}
+
+function adjustTopLevelNewlines(numPrecedingNewlines, prevNode, node) {
+  // Start by bounding the number of blank lines to 2
+  numPrecedingNewlines = upperBound(numPrecedingNewlines, 3);
+
+  // If this isn't the very first node, which two nodes the blank lines
+  // are between may affect how many blank lines we need.
+  if (prevNode !== null) {
+    if (isBorderingFunctionOrClass(prevNode, node)) {
+      // We need two blank lines.
+      numPrecedingNewlines = 3;
+    } else if (isImport(prevNode)) {
+      if (isImport(node)) {
+        // If we're between imports, bound to one blank line
+        numPrecedingNewlines = upperBound(numPrecedingNewlines, 2);
+      } else {
+        // Otherwise if this is after imports we should have one blank
+        // line.
+        numPrecedingNewlines = 2;
+      }
+    }
+  }
+  return numPrecedingNewlines;
+}
+
+function adjustIndentedNewlines(numPrecedingNewlines, prevNode, node) {
+  // Start by bounding the number of blank lines to 1
+  if (numPrecedingNewlines > 2) {
+    numPrecedingNewlines = 2;
+  }
+  if (prevNode !== null) {
+    if (isBorderingFunctionOrClass(prevNode, node)) {
+      // We need one blank line.
+      numPrecedingNewlines = 2;
+    }
+  }
+  return numPrecedingNewlines;
+}
+
+function printBody(path, print, isTopLevel) {
+  const text = path.stack[0].source;
+  const childDocs = path.map(print, "body");
+  const childNodes = path.map(path => path.getValue(), "body");
+  const parts = [];
+
+  for (let i = 0; i < childDocs.length; i++) {
+    const doc = childDocs[i];
+    const node = childNodes[i];
+    const prevNode = i > 0 ? childNodes[i - 1] : null;
+
+    let numPrecedingNewlines = countNumPrecedingChars(
+      text,
+      node.start,
+      "\n",
+      " "
+    );
+
+    // Adjust the number of newlines as necessary to conform to PEP8
+    if (isTopLevel) {
+      numPrecedingNewlines = adjustTopLevelNewlines(
+        numPrecedingNewlines,
+        prevNode,
+        node
+      );
+    } else {
+      numPrecedingNewlines = adjustIndentedNewlines(
+        numPrecedingNewlines,
+        prevNode,
+        node
+      );
+    }
+
+    if (i === 0) {
+      // Despite whatever we just calculated, if this is the first thing in the
+      // body, don't put any newlines before it.
+      numPrecedingNewlines = 0;
+    } else {
+      // Otherwise we want at least one newline (no two statements on the same
+      // line).
+      numPrecedingNewlines = lowerBound(numPrecedingNewlines, 1);
+    }
+
+    // Now go ahead and insert the newlines into our doc parts
+    for (let i = 0; i < numPrecedingNewlines; i++) {
+      const isLast = i === numPrecedingNewlines - 1;
+      if (isLast) {
+        // On the last one we use a normal hardline, which includes indentation.
+        parts.push(hardline);
+      } else {
+        // On all the others we use a literal line so that the blank line isn't
+        // indented.
+        parts.push(literalline);
+      }
+    }
+    // Finally add the actual section of the body for the current node.
+    parts.push(doc);
+  }
+
+  return concat(parts);
 }
 
 function printForIn(path, print) {
@@ -332,7 +472,7 @@ function genericPrint(path, options, print) {
 
   switch (n.ast_type) {
     case "Module": {
-      return concat([printBody(path, print), hardline]);
+      return concat([printBody(path, print, true /*isTopLevel*/), hardline]);
     }
 
     case "AsyncFunctionDef":
@@ -818,7 +958,14 @@ function genericPrint(path, options, print) {
     }
 
     case "Return": {
-      return group(concat(["return", line, path.call(print, "value")]));
+      const returnValue = path.call(print, "value");
+      if (returnValue) {
+        return groupConcat([
+          "return",
+          indentConcat([escapedLine, returnValue])
+        ]);
+      }
+      return "return";
     }
 
     case "With": {
@@ -895,10 +1042,11 @@ function genericPrint(path, options, print) {
     }
 
     case "Yield": {
-      return groupConcat([
-        "yield",
-        indentConcat([escapedLine, path.call(print, "value")])
-      ]);
+      const yieldValue = path.call(print, "value");
+      if (yieldValue) {
+        return groupConcat(["yield", indentConcat([escapedLine, yieldValue])]);
+      }
+      return "yield";
     }
 
     case "YieldFrom": {
