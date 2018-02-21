@@ -81,24 +81,21 @@ function run_spec(dirname, parsers, options) {
 }
 global.run_spec = run_spec;
 
-function stripLocation(ast) {
+/**
+ * This gets rid of extra keys not removed by the massageAST function which are not suitable or relevant when
+ * comparing two different ASTs.
+ */
+function stripExtraNonComparableKeys(ast) {
   if (Array.isArray(ast)) {
-    return ast.map(e => stripLocation(e));
+    return ast.map(e => stripExtraNonComparableKeys(e));
   }
   if (typeof ast === "object") {
     const newObj = {};
     for (const key in ast) {
-      if (
-        key === "loc" ||
-        key === "range" ||
-        key === "raw" ||
-        key === "comments" ||
-        key === "parent" ||
-        key === "prev"
-      ) {
+      if (key === "text") {
         continue;
       }
-      newObj[key] = stripLocation(ast[key]);
+      newObj[key] = stripExtraNonComparableKeys(ast[key]);
     }
     return newObj;
   }
@@ -106,7 +103,7 @@ function stripLocation(ast) {
 }
 
 function parse(string, opts) {
-  return stripLocation(prettier.__debug.parse(string, opts));
+  return stripExtraNonComparableKeys(prettier.__debug.parse(string, opts));
 }
 
 function prettyprint(src, filename, options) {
