@@ -731,7 +731,13 @@ function genericPrint(path, options, print) {
     }
 
     case "Import": {
-      return concat(["import ", join(", ", path.map(print, "names"))]);
+      return groupConcat([
+        "import",
+        indentConcat([
+          escapedLine,
+          group(join(concat([",", escapedLine]), path.map(print, "names")))
+        ])
+      ]);
     }
 
     case "ImportFrom": {
@@ -740,7 +746,12 @@ function genericPrint(path, options, print) {
         ".".repeat(n.level),
         n.module,
         " import ",
-        join(", ", path.map(print, "names"))
+        printListLike(
+          ifBreak("("),
+          path.map(print, "names"),
+          trailingComma,
+          ifBreak(")")
+        )
       ]);
     }
 
