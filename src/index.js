@@ -110,6 +110,13 @@ const options = {
         description: "Python 3"
       }
     ]
+  },
+  __isInTest: {
+    since: "0.0.0-development", // FIXME: Fix this before releasing.
+    category: "Python",
+    type: "boolean",
+    default: false,
+    description: "Whether we're currently executing tests"
   }
 };
 

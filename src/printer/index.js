@@ -1077,7 +1077,7 @@ function genericPrint(path, options, print) {
 
     /* istanbul ignore next */
     default:
-      if (global.isInTest) {
+      if (options.__isInTest) {
         throw "Unknown Python node: " +
           JSON.stringify(n, null /*replacer*/, 4 /*space*/);
       }

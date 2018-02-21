@@ -13,7 +13,8 @@ function run_spec(dirname, parsers, options) {
   options = Object.assign(
     {
       plugins: ["."],
-      tabWidth: 4
+      tabWidth: 4,
+      __isInTest: true
     },
     options
   );
