@@ -1077,6 +1077,10 @@ function genericPrint(path, options, print) {
 
     /* istanbul ignore next */
     default:
+      if (process.env.NODE_ENV === "test") {
+        throw "Unknown Python node: " +
+          JSON.stringify(n, null /*replacer*/, 4 /*space*/);
+      }
       // eslint-disable-next-line no-console
       console.error("Unknown Python node:", n);
       return n.source;
