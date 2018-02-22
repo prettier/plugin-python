@@ -744,7 +744,7 @@ function genericPrint(path, options, print) {
       return concat([
         "from ",
         ".".repeat(n.level),
-        n.module,
+        n.module || "",
         " import ",
         printListLike(
           ifBreak("("),
