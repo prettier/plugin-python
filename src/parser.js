@@ -22,7 +22,7 @@ function parseText(text, pythonExecutable) {
 }
 
 function parse(text, parsers, opts) {
-  const pythonExectuable = `python${opts.pythonVersion == "2" ? "" : "3"}`;
+  const pythonExectuable = `python${opts.pythonVersion}`;
   const executionResult = parseText(text, pythonExectuable);
 
   const res = executionResult.stdout.toString();
