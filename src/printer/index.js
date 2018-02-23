@@ -986,7 +986,7 @@ function genericPrint(path, options, print) {
         : [printWithItem(path, print)];
       if (options.pythonVersion === "2") {
         return items.reverse().reduce((parts, item, i) => {
-          const withGroup = group(concat(["with", line, item, ":"]))
+          const withGroup = group(concat(["with", line, item, ":"]));
           if (i === items.length - 1) {
             return concat([withGroup, parts]);
           }
@@ -995,7 +995,7 @@ function genericPrint(path, options, print) {
       }
 
       return concat([
-        group(concat(["with", line, join(",", items), ":"])),
+        group(concat(["with", line, join(", ", items), ":"])),
         indent(concat([hardline, printBody(path, print)]))
       ]);
     }
