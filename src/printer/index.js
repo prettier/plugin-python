@@ -986,7 +986,7 @@ function genericPrint(path, options, print) {
         : [printWithItem(path, print)];
 
       return concat([
-        group(concat(["with", line, join(",", items), ":"])),
+        group(concat(["with", line, join(", ", items), ":"])),
         indent(concat([hardline, printBody(path, print)]))
       ]);
     }

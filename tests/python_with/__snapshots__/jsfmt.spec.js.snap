@@ -37,7 +37,7 @@ with open("tmp/index.html") as f:
 with open("tmp/index.html"):
     print("great")
 
-with A() as X,B() as Y,C() as Z:
+with A() as X, B() as Y, C() as Z:
     do_something()
 
 `;
