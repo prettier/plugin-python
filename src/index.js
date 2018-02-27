@@ -147,5 +147,8 @@ module.exports = {
   languages,
   printers,
   parsers,
-  options
+  options,
+  defaultOptions: {
+    tabWidth: 4
+  }
 };
