@@ -116,13 +116,19 @@ foo("""this should remain as is """
 foo("this should remain as is \\t "
     r'because it is really weird \\n')
 
-foo("this SHOULD be a multi-line string because it is very long and does not fit on one line")
+foo(
+    "this SHOULD be a multi-line string because it is very long and does not fit on one line"
+)
 
-foo('this SHOULD be re-flowed, but still a multi-line string '
-    "because it is very long and does not fit on one line")
+foo(
+    'this SHOULD be re-flowed, but still a multi-line string '
+    "because it is very long and does not fit on one line"
+)
 
-foo('''this SHOULD NOT be re-flowed, but still a multi-line string '''
-    """because it is very long and does not fit on one line""")
+foo(
+    '''this SHOULD NOT be re-flowed, but still a multi-line string '''
+    """because it is very long and does not fit on one line"""
+)
 
 `;
 
@@ -242,12 +248,18 @@ foo("""this should remain as is """
 foo("this should remain as is \\t "
     r'because it is really weird \\n')
 
-foo("this SHOULD be a multi-line string because it is very long and does not fit on one line")
+foo(
+    "this SHOULD be a multi-line string because it is very long and does not fit on one line"
+)
 
-foo('this SHOULD be re-flowed, but still a multi-line string '
-    "because it is very long and does not fit on one line")
+foo(
+    'this SHOULD be re-flowed, but still a multi-line string '
+    "because it is very long and does not fit on one line"
+)
 
-foo('''this SHOULD NOT be re-flowed, but still a multi-line string '''
-    """because it is very long and does not fit on one line""")
+foo(
+    '''this SHOULD NOT be re-flowed, but still a multi-line string '''
+    """because it is very long and does not fit on one line"""
+)
 
 `;

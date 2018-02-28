@@ -11,6 +11,7 @@ const line = docBuilders.line;
 const softline = docBuilders.softline;
 const literalline = docBuilders.literalline;
 const group = docBuilders.group;
+const conditionalGroup = docBuilders.conditionalGroup;
 const indent = docBuilders.indent;
 const ifBreak = docBuilders.ifBreak;
 
@@ -452,6 +453,174 @@ function printComprehensionLike(open, element, generators, close) {
   ]);
 }
 
+function getExpandedValue(value, valueNode) {
+  const canExpandValue = [
+    "List",
+    "Set",
+    "Dict",
+    "Call",
+    "Tuple",
+    "GeneratorExp",
+    "DictComp",
+    "SetComp",
+    "ListComp",
+    "Lambda"
+  ].includes(valueNode.ast_type);
+
+  // If we can't expand the value, we won't explicitly break it and just use the
+  // normal value instead. While this is arguably slightly less efficient (since
+  // we'll have two conditionalGroup states that are the same), it shouldn't
+  // have a meaningful impact on the runtime and is easier to read.
+  return canExpandValue ? group(value, { shouldBreak: true }) : value;
+}
+
+/**
+ * Print a value in a manner where we try to expand it first before putting it
+ * on its own line. In particular this is useful for putting the open-bracket of
+ * array literals on the previous line (eg in a return statement or single-arg
+ * function call) rather than first breaking the opening bracket of the array to
+ * its own line then breaking each array element to *their* own lines. This
+ * putting-on-the-previous-line is what we're calling "expanding" a value. Note
+ * that this will only try to expand certain types of values, as determined by
+ * the getExpandedValue function.
+ *
+ * @param opener what to put before the value (like "return ")
+ * @param value the printed doc for the value itself
+ * @param valueNode the AST node for the value itself
+ * @param hasTrailingComma whether the option for trailing commas is set. This
+ *    argument is optional and only does anything if maybeCloser is provided.
+ * @param maybeCloser what to put after the value. This arguments is optional
+ *    and controls a few assumptions like whether newlines need to be escaped.
+ */
+function printExpandingValue(
+  opener,
+  value,
+  valueNode,
+  hasTrailingComma,
+  maybeCloser
+) {
+  // Assign a few values based on whether or not we have a closer. Using a local
+  // anonymous function and a destructuring assignment, rather than a bunch of
+  // ternary statements, since this seems more clear and allows the variables to
+  // be const.
+  const {
+    closer,
+    closerLine,
+    relevantTrailingComma,
+    openerLineEscape
+  } = (() => {
+    if (maybeCloser === undefined) {
+      // If we don't have anything that closes this, these value are all
+      // irrelevant so we set them to no-ops
+      return {
+        // Make the closer itself valid to print
+        closer: "",
+        // Don't add a newline at the end
+        closerLine: "",
+        // No trailing comma
+        relevantTrailingComma: "",
+        // If we don't have a closer, assume newlines need to be escaped
+        openerLineEscape: "\\"
+      };
+    }
+    return {
+      // We can use the closer that was given
+      closer: maybeCloser,
+      // Make sure to put a newline before the closer in the most-expanded case
+      closerLine: hardline,
+      // Add a trailing comma, if asked for by the options
+      relevantTrailingComma: hasTrailingComma === true ? "," : "",
+      // Since we have a closer, we assume we don't need to escape newlines
+      openerLineEscape: ""
+    };
+  })();
+
+  const expandedValue = getExpandedValue(value, valueNode);
+
+  return conditionalGroup([
+    // First try it with no breaks at all
+    concat([opener, value, closer]),
+    // Then try force breaking the value but leaving it starting on the same
+    // line as the opener and ending on the same line as the closer.
+    concat([opener, expandedValue, closer]),
+    // Finally fall back to the full-break form which puts the value on its own
+    // line entirely.
+    concat([
+      opener,
+      openerLineEscape,
+      indentConcat([hardline, value, relevantTrailingComma]),
+      closerLine,
+      closer
+    ])
+  ]);
+}
+
+/**
+ * This handles printing assignments where there are (possibly) multiple things
+ * (targets) on the left-hand side of the assignment. The implementation of this
+ * function mirrors that of printExpandingValue, but with a few more special
+ * cases for splitting the subsequent targets. Note that this will only try to
+ * expand certain types of values, as determined by the getExpandedValue
+ * function.
+ *
+ * This function could potentially be merged into printExpandingValue if we
+ * added another case in which it expands the `opener`, but until we need to
+ * mess with this stuff more, its unclear that that has any benefit for either
+ * runtime speed or readability.
+ *
+ * @param targets the items on the left-hand side of the assignment
+ * @param targetSeparator what to use to separate the targets
+ * @param value the printed doc for the item on the right-hand side of the
+ *    assignment
+ * @param valueNode the AST node for the item on the right-hand side of the
+ *    assignment
+ */
+function printMultiAssignment(targets, targetSeparator, value, valueNode) {
+  const expandedValue = getExpandedValue(value, valueNode);
+
+  return conditionalGroup([
+    // First try it with no breaks at all
+    concat([join(concat([targetSeparator, " "]), targets), " = ", value]),
+    // Then try force breaking the value but leaving it starting on the same
+    // line as the targets.
+    concat([
+      join(concat([targetSeparator, " "]), targets),
+      " = ",
+      expandedValue
+    ]),
+    // Then try putting the value on the next line but leaving the
+    // targets all together.
+    concat([
+      join(concat([targetSeparator, " "]), targets),
+      " = \\",
+      indentConcat([hardline, value])
+    ]),
+    // Finally try breaking the targets up. The indent here only affects
+    // subsequent newlines, and shouldn't cause the initial target to be
+    // indented.
+    indentConcat([
+      join(concat([targetSeparator, " \\", hardline]), targets),
+      " = ",
+      // Within this (the option where we break up the targets) we have
+      // two options for how to print the value. This has to be a nested
+      // conditionalGroup (rather than an extra case in the outer
+      // conditional) due to how the breaking logic works for groups (it
+      // assumes the whole thing can fit as soon as it hits a single
+      // hardline). Note that it's important that this group is in the final
+      // option for the parent conditionalGroup, since otherwise we wouldn't
+      // try subsequent expansions for this inner group.
+      conditionalGroup([
+        // First try starting the value on the same line, but splitting it if
+        // possible. If we're breaking up the targets to be on their own
+        // lines, we're going to force the value to break.
+        expandedValue,
+        // Otherwise try starting the value on its own line.
+        concat(["\\", hardline, value])
+      ])
+    ])
+  ]);
+}
+
 function genericPrint(path, options, print) {
   const n = path.getValue();
   if (!n) {
@@ -466,9 +635,8 @@ function genericPrint(path, options, print) {
     return tokens[n.ast_type];
   }
 
-  const trailingComma = concat(
-    options.trailingComma === "none" ? [] : [ifBreak(",")]
-  );
+  const hasTrailingComma = options.trailingComma !== "none";
+  const trailingComma = hasTrailingComma ? ifBreak(",") : "";
 
   switch (n.ast_type) {
     case "Module": {
@@ -581,7 +749,31 @@ function genericPrint(path, options, print) {
       args = args.concat(path.map(print, "args"));
       args = args.concat(path.map(print, "keywords"));
 
-      return concat([path.call(print, "func"), "(", join(", ", args), ")"]);
+      const funcWithParen = concat([path.call(print, "func"), "("]);
+
+      if (args.length === 0) {
+        // For the no-arg case we have some special formatting
+        return concat([funcWithParen, ")"]);
+      }
+
+      if (args.length === 1) {
+        // For the single-arg case we have some special formatting
+        const argNodes = n.args.concat(n.keywords);
+        if (argNodes.length !== 1) {
+          throw Error("Num printed args disagrees with num arg nodes");
+        }
+        const arg = args[0];
+        const argNode = argNodes[0];
+        return printExpandingValue(
+          funcWithParen,
+          arg,
+          argNode,
+          hasTrailingComma,
+          ")"
+        );
+      }
+      // Here's the general case:
+      return printListLike(funcWithParen, args, trailingComma, ")");
     }
 
     case "Str": {
@@ -647,35 +839,43 @@ function genericPrint(path, options, print) {
     }
 
     case "Assign": {
-      return group(
-        concat([
-          join(" = ", path.map(print, "targets")),
-          " = ",
-          path.call(print, "value")
-        ])
-      );
+      const targets = path.map(print, "targets");
+      const value = path.call(print, "value");
+      return printMultiAssignment(targets, " =", value, n.value);
     }
 
     case "AugAssign": {
-      return concat([
-        path.call(print, "target"),
-        " ",
-        path.call(print, "op"),
-        "= ",
-        path.call(print, "value")
-      ]);
+      const target = path.call(print, "target");
+      const op = path.call(print, "op");
+      const value = path.call(print, "value");
+      const valueNode = n.value;
+      return printExpandingValue(
+        concat([target, " ", op, "= "]),
+        value,
+        valueNode
+      );
     }
 
     case "AnnAssign": {
-      const valueParts = n.value ? [" = ", path.call(print, "value")] : [];
+      const target = path.call(print, "target");
+      const annotation = path.call(print, "annotation");
 
-      return groupConcat(
-        [
-          path.call(print, "target"),
+      if (!n.value) {
+        return groupConcat([
+          target,
           ":",
-          indentConcat([escapedLine, path.call(print, "annotation")])
-        ].concat(valueParts)
-      );
+          indentConcat([escapedLine, annotation])
+        ]);
+      }
+
+      const value = path.call(print, "value");
+      // This is similar to the case where we have multiple equals signs in an
+      // assignment (multiple targets) because the annotation will need to wrap
+      // to its own line and cause the value to have an extra indent. Thus we
+      // re-use the function that we used for normal assignments that may have
+      // multiple targets and treat the annotation as a second target (but use
+      // ":" to separate the targets rather than " =").
+      return printMultiAssignment([target, annotation], ":", value, n.value);
     }
 
     case "Dict": {
@@ -970,13 +1170,12 @@ function genericPrint(path, options, print) {
 
     case "Return": {
       const returnValue = path.call(print, "value");
-      if (returnValue) {
-        return groupConcat([
-          "return",
-          indentConcat([escapedLine, returnValue])
-        ]);
+      if (!returnValue) {
+        // Handle the case where we don't have a value first
+        return "return";
       }
-      return "return";
+
+      return printExpandingValue("return ", returnValue, n.value);
     }
 
     case "With": {
@@ -1054,10 +1253,12 @@ function genericPrint(path, options, print) {
 
     case "Yield": {
       const yieldValue = path.call(print, "value");
-      if (yieldValue) {
-        return groupConcat(["yield", indentConcat([escapedLine, yieldValue])]);
+      if (!yieldValue) {
+        // Handle the case where we don't have a value first
+        return "yield";
       }
-      return "yield";
+
+      return printExpandingValue("yield ", yieldValue, n.value);
     }
 
     case "YieldFrom": {

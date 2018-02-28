@@ -1,3 +1,9 @@
 print(123)
 
 random.run(123)
+
+long_function_name_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa(argument1, argument2, argument3)
+
+long_function_name_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa(long_single_argument_name_aaaaaa)
+
+long_function_name_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa(1 / long_single_argument_name_aaaaaa)

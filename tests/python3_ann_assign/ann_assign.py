@@ -1,0 +1,14 @@
+a: str
+a: bool = True
+
+my_long_var_aaaaaaaaaaaaaaaaaaaaaaaaaa: MyLongTypeAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+
+my_long_var_aaaaaaaaaaaaaaaaaaaaaaaaaa: int = my_long_value_aaaaaaaaaaaaaaaaaaaaaaaaaa
+
+my_long_var_aaaaaaaaaaaaaaaaaaaaaaaaaa: MyLongTypeAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA = 1
+
+my_long_var_aaaaaaaaaaaaaaaaaaaaaaaaaa: MyLongTypeAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA = my_long_value_aaaaaaaaaaaaaaaaaaaaaaaaaa
+
+my_long_var_aaaaaaaaaaaaaaaaaaaaaaaaaa: MyLongTypeAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA = [long_item_1_aaaaaaaaaaaa, long_item_1_aaaaaaaaaaaa, long_item_1_aaaaaaaaaaaa]
+
+a: List[int] = [long_item_1_aaaaaaaaaaaa, long_item_1_aaaaaaaaaaaa, long_item_1_aaaaaaaaaaaa]
