@@ -149,6 +149,7 @@ module.exports = {
   parsers,
   options,
   defaultOptions: {
+    printWidth: 79,
     tabWidth: 4
   }
 };
