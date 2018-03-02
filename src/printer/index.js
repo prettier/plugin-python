@@ -1111,13 +1111,20 @@ function genericPrint(path, options, print) {
     }
 
     case "Assert": {
-      const parts = ["assert", line, path.call(print, "test")];
+      const predicate = groupConcat([
+        "assert",
+        indentConcat([escapedLine, path.call(print, "test")])
+      ]);
 
-      if (n.msg) {
-        parts.push(",", line, path.call(print, "msg"));
+      if (!n.msg) {
+        return predicate;
       }
 
-      return group(concat(parts));
+      return groupConcat([
+        predicate,
+        ",",
+        indentConcat([escapedLine, path.call(print, "msg")])
+      ]);
     }
 
     case "Yield": {
