@@ -1,2 +1,8 @@
 assert 3 + 3
 assert False, 'message'
+
+assert my_long_predicate_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+
+assert my_long_predicate_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, "message"
+
+assert predicate, "my_long_message_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
