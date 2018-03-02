@@ -980,14 +980,82 @@ function genericPrint(path, options, print) {
     }
 
     case "With": {
-      // python 2 and 3
-      const items = n.items
-        ? path.map(print, "items")
-        : [printWithItem(path, print)];
+      /**
+       * Handles traversing Python 2 AST to create the same syntactic sugar as
+       * the input. Python 2 de-sugars a `with` with multiple items to be a
+       * series of nested With AST nodes. However, we'd like to be able to
+       * determine the difference between a `with` that has multiple items and
+       * nested `with` blocks and print them accordingly. To do so, we look to
+       * see if the With node has exactly one statement in its body that is also
+       * a With that starts at the same place as the current node. If so, we
+       * interpret it as another item for the current `with`. We do this
+       * recursively until that condition is no longer true. This function
+       * therefore returns the printed list of items for the current `with`
+       * and the printed body.
+       *
+       * This needs to be a function because it seems that the only way to get
+       * a FastPath instance for a child node is to use the `call` function (or
+       * its derivatives, like `map` and `each`). Further, this needs to be an
+       * inline function (rather than a global function) since it needs access
+       * to the `print` function (which is a parameter to this function) and
+       * there doesn't seem to be any easy way to pass that through the `call`
+       * invocation.
+       *
+       * @param path
+       * @returns {[items, body]}
+       */
+      const printPython2With = path => {
+        // This function should only be called with a With node, so we assume
+        // that's what we're working with.
+        const withNode = path.getNode();
+        const currentNodeItems = [printWithItem(path, print)];
+
+        if (
+          // If we have exactly one child statement ...
+          withNode.body.length === 1 &&
+          // ... and that statement is a With node ...
+          withNode.body[0].ast_type === "With" &&
+          // ... and it starts at the same place in the file as the current
+          // node (this will be the beginning of the "with " text that each node
+          // ultimately came from; this is handled for us by the asttokens
+          // library)  ...
+          withNode.body[0].start === withNode.start
+        ) {
+          // ... then this is Python 2's de-sugaring and we need to consider the
+          // child to actually be an item of the current `with` block.
+
+          // We first recursively print out the child's items and body.
+          const [childItems, body] = path.call(printPython2With, "body", 0);
+          // Then we prepend our item to the list of items and return all the
+          // items and the body.
+          return [currentNodeItems.concat(childItems), body];
+        }
+
+        // Otherwise this is a "normal" `with` block and we return just our item
+        // and the body (this is the base case for the recursion).
+        return [currentNodeItems, printBody(path, print)];
+      };
+
+      // Actually print the items and body, based on whether this is
+      // Python 2 or 3.
+      const [items, body] = n.items
+        ? [path.map(print, "items"), printBody(path, print)] // Python 3
+        : path.call(printPython2With); // Python 2
 
       return concat([
-        group(concat(["with", line, join(", ", items), ":"])),
-        indent(concat([hardline, printBody(path, print)]))
+        groupConcat([
+          "with",
+          // Double indent so the items are more distinguishable from the body.
+          // Plus flake8 complains if the indentation is the same as the body.
+          indent(
+            indentConcat([
+              escapedLine,
+              join(concat([",", escapedLine]), items),
+              ":"
+            ])
+          )
+        ]),
+        indentConcat([hardline, body])
       ]);
     }
 
