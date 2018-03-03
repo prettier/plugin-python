@@ -17,6 +17,8 @@ raise forms.ValidationError(
         'username': self.username_field.verbose_name
     }
 )
+
+raise SomeErrorWithAReallyReallyVeryVeryExtremelyExtensivelyLongNameSoItBreaks()
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 raise
 raise ValueError
@@ -32,6 +34,9 @@ raise forms.ValidationError(
     code="invalid_login",
     params={"username": self.username_field.verbose_name}
 )
+
+raise \
+    SomeErrorWithAReallyReallyVeryVeryExtremelyExtensivelyLongNameSoItBreaks()
 
 `;
 
@@ -52,6 +57,8 @@ raise forms.ValidationError(
         'username': self.username_field.verbose_name
     }
 )
+
+raise SomeErrorWithAReallyReallyVeryVeryExtremelyExtensivelyLongNameSoItBreak()
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 raise
 raise ValueError
@@ -67,5 +74,8 @@ raise forms.ValidationError(
     code="invalid_login",
     params={"username": self.username_field.verbose_name}
 )
+
+raise \
+    SomeErrorWithAReallyReallyVeryVeryExtremelyExtensivelyLongNameSoItBreaks()
 
 `;

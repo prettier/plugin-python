@@ -14,3 +14,5 @@ raise forms.ValidationError(
         'username': self.username_field.verbose_name
     }
 )
+
+raise SomeErrorWithAReallyReallyVeryVeryExtremelyExtensivelyLongNameSoItBreaks()
