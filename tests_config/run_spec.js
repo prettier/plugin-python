@@ -5,8 +5,10 @@ const extname = require("path").extname;
 const prettier = require("prettier");
 const massageAST = require("prettier/src/common/clean-ast").massageAST;
 const normalizeOptions = require("prettier/src/main/options").normalize;
+const getPycodestyleOutput = require("./pycodestyle").getPycodestyleOutput;
 
 const AST_COMPARE = process.env["AST_COMPARE"];
+const PEP8_VALIDATE = process.env["PEP8_VALIDATE"];
 
 function run_spec(dirname, parsers, options) {
   options = Object.assign(
@@ -39,6 +41,10 @@ function run_spec(dirname, parsers, options) {
         expect(raw(source + "~".repeat(80) + "\n" + output)).toMatchSnapshot(
           filename
         );
+
+        if (PEP8_VALIDATE) {
+          expect(getPycodestyleOutput(output, mergedOptions)).toEqual("");
+        }
       });
 
       parsers.slice(1).forEach(parserName => {
