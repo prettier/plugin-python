@@ -15,6 +15,7 @@ module.exports = {
   BitAnd: "&",
   BitXor: "^",
   BitOr: "|",
+  Invert: "~",
   Lt: "<",
   LtE: "<=",
   Gt: ">",
