@@ -472,7 +472,14 @@ function genericPrint(path, options, print) {
 
   switch (n.ast_type) {
     case "Module": {
-      return concat([printBody(path, print, true /*isTopLevel*/), hardline]);
+      const parts = [printBody(path, print, true /*isTopLevel*/)];
+
+      // Only force a trailing newline if there were any contents.
+      if (n.body.length || n.comments) {
+        parts.push(hardline);
+      }
+
+      return concat(parts);
     }
 
     case "AsyncFunctionDef":
