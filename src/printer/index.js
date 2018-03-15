@@ -901,9 +901,9 @@ function genericPrint(path, options, print) {
       return group(
         concat([
           path.call(print, "left"),
-          line,
+          escapedLine,
           path.call(print, "op"),
-          line,
+          escapedLine,
           path.call(print, "right")
         ])
       );
@@ -1073,7 +1073,7 @@ function genericPrint(path, options, print) {
     case "BoolOp": {
       return group(
         join(
-          concat([line, path.call(print, "op"), line]),
+          concat([escapedLine, path.call(print, "op"), escapedLine]),
           path.map(print, "values")
         )
       );
