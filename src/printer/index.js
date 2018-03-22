@@ -885,12 +885,14 @@ function genericPrint(path, options, print) {
     }
 
     case "comprehension": {
-      const parts = [printForIn(path, print)];
+      let parts = [printForIn(path, print)];
 
       if (n.ifs.length > 0) {
-        parts.push(
-          line,
-          groupConcat(["if", line, join(line, path.map(print, "ifs"))])
+        parts = parts.concat(
+          path.map(
+            path => concat([line, groupConcat(["if", line, path.call(print)])]),
+            "ifs"
+          )
         );
       }
 
