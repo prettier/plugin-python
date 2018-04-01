@@ -128,7 +128,12 @@ function printArguments(print, path, argsKey, defaultsKey) {
 
   const merge = n[argsKey]
     .concat(n[defaultsKey].map(x => Object.assign({}, x, { isDefault: true })))
-    .sort((a, b) => a.col_offset - b.col_offset);
+    .sort(
+      (a, b) =>
+        a.lineno === b.lineno
+          ? a.col_offset - b.col_offset
+          : a.lineno - b.lineno
+    );
 
   const parts = [];
 
