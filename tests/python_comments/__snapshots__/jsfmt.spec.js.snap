@@ -20,7 +20,7 @@ if a:  # a
         # post_migrate signals (which create ContentTypes).
     ]
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-if a: # a
+if (a): # a
     # b
     c
 
@@ -60,7 +60,7 @@ if a:  # a
         # post_migrate signals (which create ContentTypes).
     ]
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-if a: # a
+if (a): # a
     # b
     c
 

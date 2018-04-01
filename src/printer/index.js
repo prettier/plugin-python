@@ -371,7 +371,13 @@ function printIf(path, print) {
   const parts = [
     type,
     " ",
-    path.call(print, "test"),
+    group(
+      concat([
+        ifBreak("("),
+        indent(indent(path.call(print, "test"))),
+        ifBreak(")")
+      ])
+    ),
     ":",
     indent(concat([hardline, printBody(path, print)]))
   ];
@@ -601,6 +607,18 @@ function genericPrint(path, options, print) {
     }
 
     case "Expr": {
+      if (n.value) {
+        if (n.value.ast_type === "BoolOp" || n.value.ast_type === "BinOp") {
+          return group(
+            concat([
+              ifBreak("("),
+              indent(concat([softline, path.call(print, "value")])),
+              softline,
+              ifBreak(")")
+            ])
+          );
+        }
+      }
       return path.call(print, "value");
     }
 
@@ -699,13 +717,28 @@ function genericPrint(path, options, print) {
     }
 
     case "Assign": {
-      return group(
-        concat([
-          join(" = ", path.map(print, "targets")),
-          " = ",
-          path.call(print, "value")
-        ])
-      );
+      const parts = [join(" = ", path.map(print, "targets")), " = "];
+
+      if (n.value) {
+        if (
+          n.value.ast_type === "BoolOp" ||
+          n.value.ast_type === "BinOp" ||
+          n.value.ast_type === "Str"
+        ) {
+          parts.push(
+            groupConcat([
+              ifBreak("("),
+              indent(concat([softline, path.call(print, "value")])),
+              softline,
+              ifBreak(")")
+            ])
+          );
+        } else {
+          parts.push(path.call(print, "value"));
+        }
+      }
+
+      return groupConcat(parts);
     }
 
     case "Delete": {
@@ -1003,9 +1036,9 @@ function genericPrint(path, options, print) {
       return group(
         concat([
           path.call(print, "left"),
-          escapedLine,
+          line,
           path.call(print, "op"),
-          escapedLine,
+          line,
           path.call(print, "right")
         ])
       );
@@ -1086,14 +1119,30 @@ function genericPrint(path, options, print) {
     }
 
     case "Return": {
-      const returnValue = path.call(print, "value");
-      if (returnValue) {
-        return groupConcat([
-          "return",
-          indentConcat([escapedLine, returnValue])
-        ]);
+      const parts = ["return"];
+
+      if (n.value) {
+        if (
+          n.value.ast_type === "BoolOp" ||
+          n.value.ast_type === "BinOp" ||
+          n.value.ast_type === "Str"
+        ) {
+          parts.push(
+            group(
+              concat([
+                ifBreak(" (", " "),
+                indent(concat([softline, path.call(print, "value")])),
+                softline,
+                ifBreak(")")
+              ])
+            )
+          );
+        } else {
+          parts.push(indentConcat([escapedLine, path.call(print, "value")]));
+        }
       }
-      return "return";
+
+      return groupConcat(parts);
     }
 
     case "With": {
@@ -1183,7 +1232,7 @@ function genericPrint(path, options, print) {
     case "BoolOp": {
       return group(
         join(
-          concat([escapedLine, path.call(print, "op"), escapedLine]),
+          concat([groupConcat([line, path.call(print, "op")]), line]),
           path.map(print, "values")
         )
       );
