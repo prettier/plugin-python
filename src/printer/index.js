@@ -333,60 +333,41 @@ function printWithItem(path, print) {
 }
 
 function printIf(path, print) {
-  function printOrElse(path) {
-    const n = path.getValue();
+  const parent = path.getParentNode();
+  const n = path.getValue();
 
-    if (n.orelse && n.orelse.length > 0) {
-      if (n.orelse[0].ast_type === "If") {
-        return concat(path.map(printElseBody, "orelse"));
-      }
-      return concat([
-        hardline,
-        "else:",
-        concat(path.map(printElseBody, "orelse"))
-      ]);
-    }
-  }
+  let type = "if";
 
-  function printElseBody(path) {
-    const n = path.getValue();
-
-    const parts = [];
-
-    if (n.ast_type === "If") {
-      parts.push(
-        concat([
-          hardline,
-          "elif ",
-          path.call(print, "test"),
-          ":",
-          indent(concat([hardline, printBody(path, print)]))
-        ])
-      );
-    } else {
-      parts.push(indent(concat([hardline, path.call(print)])));
-    }
-
-    const orElse = printOrElse(path);
-
-    if (orElse) {
-      parts.push(orElse);
-    }
-
-    return concat(parts);
+  if (
+    parent.ast_type === "If" &&
+    parent.orelse.length > 0 &&
+    parent.orelse[0].ast_type === "If" &&
+    parent.orelse[0] === n
+  ) {
+    type = "elif";
   }
 
   const parts = [
-    "if ",
+    type,
+    " ",
     path.call(print, "test"),
     ":",
     indent(concat([hardline, printBody(path, print)]))
   ];
 
-  const orElse = printOrElse(path);
+  if (n.orelse.length) {
+    parts.push(hardline);
 
-  if (orElse) {
-    parts.push(orElse);
+    if (n.orelse[0].ast_type === "If") {
+      parts.push(concat(path.map(print, "orelse")));
+    } else {
+      parts.push(
+        concat([
+          "else:",
+          indentConcat([hardline, join(hardline, path.map(print, "orelse"))])
+        ])
+      );
+    }
   }
 
   return concat(parts);
