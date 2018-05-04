@@ -58,7 +58,7 @@ raise forms.ValidationError(
     }
 )
 
-raise SomeErrorWithAReallyReallyVeryVeryExtremelyExtensivelyLongNameSoItBreak()
+raise SomeErrorWithAReallyReallyVeryVeryExtremelyExtensivelyLongNameSoItBreaks()
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 raise
 raise ValueError
