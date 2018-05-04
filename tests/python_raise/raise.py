@@ -2,10 +2,7 @@ raise
 raise ValueError
 raise ValueError("error")
 
-raise NotImplementedError(
-    'The SimpleListFilter.lookups() method must be overridden to '
-    'return a list of tuples (value, verbose value).'
-)
+raise NotImplementedError('example.')
 
 raise forms.ValidationError(
     self.error_messages['invalid_login'],
