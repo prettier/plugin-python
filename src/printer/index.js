@@ -895,6 +895,17 @@ function genericPrint(path, options, print) {
       );
     }
 
+    case "ExtSlice": {
+      return printListLike(
+        path,
+        options,
+        "",
+        path.map(print, "dims"),
+        trailingComma,
+        ""
+      );
+    }
+
     case "UnaryOp": {
       // We don't use a line or escapedLine with Not because wrapping and
       // indenting doesn't make sense with a 4-space indent, since the operand
