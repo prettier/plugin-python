@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`delete.py 1`] = `
+del f.bar
+del a
+del x[1]
+del x['asd']
+del a, b
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+del f.bar
+del a
+del x[1]
+del x["asd"]
+del a, b
+
+`;
+
+exports[`delete.py 2`] = `
+del f.bar
+del a
+del x[1]
+del x['asd']
+del a, b
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+del f.bar
+del a
+del x[1]
+del x["asd"]
+del a, b
+
+`;
