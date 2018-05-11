@@ -649,6 +649,13 @@ function genericPrint(path, options, print) {
       );
     }
 
+    case "Delete": {
+      return groupConcat([
+        "del ",
+        printListLike("", path.map(print, "targets"), trailingComma, "")
+      ]);
+    }
+
     case "AugAssign": {
       return concat([
         path.call(print, "target"),
