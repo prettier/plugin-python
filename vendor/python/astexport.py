@@ -8,12 +8,24 @@ import asttokens
 
 def export_json(atok, pretty_print=False):
     dict = export_dict(atok)
+
     dict['comments'] = [{
-            'ast_type': 'comment',
-            'value': token.string,
-            'start': token.startpos,
-            'end': token.endpos,
-        } for token in atok.tokens if token.type == tokenize.COMMENT]
+        'ast_type': 'comment',
+        'value': token.string,
+        'start': token.startpos,
+        'end': token.endpos,
+        'loc': {
+            'start': {
+                'line': token.start[0],
+                'column': token.start[1]
+            },
+            'end': {
+                'line': token.end[0],
+                'column': token.end[1]
+            }
+        }
+    } for token in atok.tokens if token.type == tokenize.COMMENT]
+
     return json.dumps(
         dict,
         indent=4 if pretty_print else None,

@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`inline_comments.py 1`] = `
+message = (
+    "hello {}"  # comment
+).format("world")
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+message = "hello {}".format("world") # comment
+
+`;
+
+exports[`inline_comments.py 2`] = `
+message = (
+    "hello {}"  # comment
+).format("world")
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+message = "hello {}".format("world") # comment
+
+`;
