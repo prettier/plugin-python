@@ -967,14 +967,12 @@ function genericPrint(path, options, print) {
 
       return concat([
         "raise",
-        group(
-          concat([
-            ifBreak(" (", " "),
-            indent(concat([softline, path.call(print, type)])),
-            softline,
-            ifBreak(")")
-          ])
-        )
+        groupConcat([
+          ifBreak(" (", " "),
+          indentConcat([softline, path.call(print, type)]),
+          softline,
+          ifBreak(")")
+        ])
       ]);
     }
 
