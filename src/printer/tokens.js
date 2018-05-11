@@ -2,6 +2,7 @@
 
 module.exports = {
   Add: "+",
+  UAdd: "+",
   USub: "-",
   Sub: "-",
   Mult: "*",
