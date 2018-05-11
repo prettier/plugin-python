@@ -4,6 +4,7 @@ const util = require("../_util-from-prettier");
 const tokens = require("./tokens");
 
 const docBuilders = require("prettier").doc.builders;
+
 const concat = docBuilders.concat;
 const join = docBuilders.join;
 const hardline = docBuilders.hardline;
@@ -459,6 +460,10 @@ function genericPrint(path, options, print) {
   switch (n.ast_type) {
     case "Module": {
       const parts = [printBody(path, print, true /*isTopLevel*/)];
+
+      parts.push(
+        util.printDanglingComments(path, options, /* sameIndent */ true)
+      );
 
       // Only force a trailing newline if there were any contents.
       if (n.body.length || n.comments) {
