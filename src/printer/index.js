@@ -26,6 +26,14 @@ function groupConcat(docs) {
   return group(concat(docs));
 }
 
+function hasDanglingComments(node) {
+  return (
+    (node.ctx && node.ctx.comments) ||
+    (node.comments &&
+      node.comments.some(comment => !comment.leading && !comment.trailing))
+  );
+}
+
 function printPythonString(raw, options) {
   // `raw` is the string exactly like it appeared in the input source
   // code, with its enclosing quotes.
@@ -57,8 +65,14 @@ function printPythonString(raw, options) {
     return raw;
   }
 
-  const double = { quote: '"', regex: /"/g };
-  const single = { quote: "'", regex: /'/g };
+  const double = {
+    quote: '"',
+    regex: /"/g
+  };
+  const single = {
+    quote: "'",
+    regex: /'/g
+  };
 
   const preferred = options.singleQuote ? single : double;
   const alternate = preferred === single ? double : single;
@@ -128,7 +142,13 @@ function printArguments(print, path, argsKey, defaultsKey) {
   // the current one
 
   const merge = n[argsKey]
-    .concat(n[defaultsKey].map(x => Object.assign({}, x, { isDefault: true })))
+    .concat(
+      n[defaultsKey].map(x =>
+        Object.assign({}, x, {
+          isDefault: true
+        })
+      )
+    )
     .sort(
       (a, b) =>
         a.lineno === b.lineno
@@ -374,7 +394,29 @@ function printIf(path, print) {
   return concat(parts);
 }
 
-function printListLike(openDoc, elements, trailingComma, closeDoc) {
+function printListLike(
+  path,
+  options,
+  openDoc,
+  elements,
+  trailingComma,
+  closeDoc
+) {
+  if (elements.length === 0) {
+    if (!hasDanglingComments(path.getValue())) {
+      return `${openDoc}${closeDoc}`;
+    }
+
+    return group(
+      concat([
+        openDoc,
+        util.printDanglingComments(path, options),
+        softline,
+        closeDoc
+      ])
+    );
+  }
+
   return groupConcat([
     openDoc,
     indentConcat([
@@ -636,6 +678,8 @@ function genericPrint(path, options, print) {
       const closeParen = preferSkipParens ? ifBreak(")") : ")";
 
       return printListLike(
+        path,
+        options,
         openParen,
         path.map(print, "elts"),
         relevantTrailingComma,
@@ -644,7 +688,14 @@ function genericPrint(path, options, print) {
     }
 
     case "List": {
-      return printListLike("[", path.map(print, "elts"), trailingComma, "]");
+      return printListLike(
+        path,
+        options,
+        "[",
+        path.map(print, "elts"),
+        trailingComma,
+        "]"
+      );
     }
 
     case "Assign": {
@@ -660,7 +711,14 @@ function genericPrint(path, options, print) {
     case "Delete": {
       return groupConcat([
         "del ",
-        printListLike("", path.map(print, "targets"), trailingComma, "")
+        printListLike(
+          path,
+          options,
+          "",
+          path.map(print, "targets"),
+          trailingComma,
+          ""
+        )
       ]);
     }
 
@@ -694,7 +752,7 @@ function genericPrint(path, options, print) {
         groupConcat([k, ":", indentConcat([line, values[i]])])
       );
 
-      return printListLike("{", pairs, trailingComma, "}");
+      return printListLike(path, options, "{", pairs, trailingComma, "}");
     }
 
     case "ClassDef": {
@@ -755,6 +813,8 @@ function genericPrint(path, options, print) {
         n.module || "",
         " import ",
         printListLike(
+          path,
+          options,
           ifBreak("("),
           path.map(print, "names"),
           trailingComma,
@@ -1153,7 +1213,14 @@ function genericPrint(path, options, print) {
     }
 
     case "Set": {
-      return printListLike("{", path.map(print, "elts"), trailingComma, "}");
+      return printListLike(
+        path,
+        options,
+        "{",
+        path.map(print, "elts"),
+        trailingComma,
+        "}"
+      );
     }
 
     case "Ellipsis": {

@@ -55,21 +55,36 @@ function printDanglingComments(path, options, sameIndent, filter) {
   const parts = [];
   const node = path.getValue();
 
-  if (!node || !node.comments) {
+  if (!node) {
     return "";
   }
 
-  path.each(commentPath => {
-    const comment = commentPath.getValue();
-    if (
-      comment &&
-      !comment.leading &&
-      !comment.trailing &&
-      (!filter || filter(comment))
-    ) {
-      parts.push(printComment(commentPath, options));
-    }
-  }, "comments");
+  if (node.comments) {
+    path.each(commentPath => {
+      const comment = commentPath.getValue();
+      if (
+        comment &&
+        !comment.leading &&
+        !comment.trailing &&
+        (!filter || filter(comment))
+      ) {
+        parts.push(printComment(commentPath, options));
+      }
+    }, "comments");
+  }
+
+  if (node.ctx && node.ctx.comments) {
+    path.each(
+      commentPath => {
+        const comment = commentPath.getValue();
+        if (comment && (!filter || filter(comment))) {
+          parts.push(printComment(commentPath, options));
+        }
+      },
+      "ctx",
+      "comments"
+    );
+  }
 
   if (parts.length === 0) {
     return "";
