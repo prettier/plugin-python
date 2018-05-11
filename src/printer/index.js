@@ -736,6 +736,20 @@ function genericPrint(path, options, print) {
       ]);
     }
 
+    case "Nonlocal": {
+      return groupConcat([
+        "nonlocal ",
+        printListLike(
+          path,
+          options,
+          "",
+          path.map(print, "names"),
+          trailingComma,
+          ""
+        )
+      ]);
+    }
+
     case "AugAssign": {
       return concat([
         path.call(print, "target"),

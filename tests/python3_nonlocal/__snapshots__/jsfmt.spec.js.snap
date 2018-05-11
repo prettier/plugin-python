@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`nonlocal.py 1`] = `
+x = 0
+def outer():
+    x = 1
+    def inner():
+        nonlocal x
+        x = 2
+        print("inner:", x)
+
+    inner()
+    print("outer:", x)
+
+outer()
+print("global:", x)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+x = 0
+
+
+def outer():
+    x = 1
+
+    def inner():
+        nonlocal x
+        x = 2
+        print("inner:", x)
+
+    inner()
+    print("outer:", x)
+
+
+outer()
+print("global:", x)
+
+`;
