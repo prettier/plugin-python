@@ -1,0 +1,2 @@
+b"example"
+b'example'
