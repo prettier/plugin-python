@@ -1,5 +1,12 @@
 "use strict";
 
+const docBuilders = require("prettier").doc.builders;
+
+const concat = docBuilders.concat;
+const hardline = docBuilders.hardline;
+const indent = docBuilders.indent;
+const join = docBuilders.join;
+
 function makeString(rawContent, enclosingQuote, unescapeUnnecessaryEscapes) {
   const otherQuote = enclosingQuote === '"' ? "'" : '"';
 
@@ -38,6 +45,43 @@ function makeString(rawContent, enclosingQuote, unescapeUnnecessaryEscapes) {
   return enclosingQuote + newContent + enclosingQuote;
 }
 
+function printComment(commentPath, options) {
+  const comment = commentPath.getValue();
+  comment.printed = true;
+  return options.printer.printComment(commentPath, options);
+}
+
+function printDanglingComments(path, options, sameIndent, filter) {
+  const parts = [];
+  const node = path.getValue();
+
+  if (!node || !node.comments) {
+    return "";
+  }
+
+  path.each(commentPath => {
+    const comment = commentPath.getValue();
+    if (
+      comment &&
+      !comment.leading &&
+      !comment.trailing &&
+      (!filter || filter(comment))
+    ) {
+      parts.push(printComment(commentPath, options));
+    }
+  }, "comments");
+
+  if (parts.length === 0) {
+    return "";
+  }
+
+  if (sameIndent) {
+    return join(hardline, parts);
+  }
+  return indent(concat([hardline, join(hardline, parts)]));
+}
+
 module.exports = {
-  makeString
+  makeString,
+  printDanglingComments
 };
