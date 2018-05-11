@@ -80,6 +80,13 @@ prettier --write "**/*.py"
           Danny Weinberg
         </a>
       </td>
+      <td align="center">
+        <a href="https://github.com/ryanashcraft">
+          <img width="150" height="150" src="https://github.com/ryanashcraft.png?v=3&s=150">
+          </br>
+          Ryan Ashcraft
+        </a>
+      </td>
     </tr>
   <tbody>
 </table>
