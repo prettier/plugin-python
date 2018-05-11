@@ -16,6 +16,11 @@ raise forms.ValidationError(
 )
 
 raise SomeErrorWithAReallyReallyVeryVeryExtremelyExtensivelyLongNameSoItBreaks()
+
+raise NotImplementedError(
+    'The SimpleListFilter.lookups() method must be overridden to '
+    'return a list of tuples (value, verbose value).'
+)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 raise
 raise ValueError
@@ -33,6 +38,11 @@ raise (
 
 raise (
     SomeErrorWithAReallyReallyVeryVeryExtremelyExtensivelyLongNameSoItBreaks()
+)
+
+raise (
+    NotImplementedError('The SimpleListFilter.lookups() method must be overridden to '
+    'return a list of tuples (value, verbose value).')
 )
 
 `;
@@ -53,6 +63,11 @@ raise forms.ValidationError(
 )
 
 raise SomeErrorWithAReallyReallyVeryVeryExtremelyExtensivelyLongNameSoItBreaks()
+
+raise NotImplementedError(
+    'The SimpleListFilter.lookups() method must be overridden to '
+    'return a list of tuples (value, verbose value).'
+)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 raise
 raise ValueError
@@ -70,6 +85,11 @@ raise (
 
 raise (
     SomeErrorWithAReallyReallyVeryVeryExtremelyExtensivelyLongNameSoItBreaks()
+)
+
+raise (
+    NotImplementedError('The SimpleListFilter.lookups() method must be overridden to '
+    'return a list of tuples (value, verbose value).')
 )
 
 `;

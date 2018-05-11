@@ -13,3 +13,8 @@ raise forms.ValidationError(
 )
 
 raise SomeErrorWithAReallyReallyVeryVeryExtremelyExtensivelyLongNameSoItBreaks()
+
+raise NotImplementedError(
+    'The SimpleListFilter.lookups() method must be overridden to '
+    'return a list of tuples (value, verbose value).'
+)
