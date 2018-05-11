@@ -93,6 +93,9 @@ class DictExportVisitor:
     def visit_NoneType(self, val):
         return None
 
+    def visit_str(self, val):
+        return val
+
     def visit_field_NameConstant_value(self, val):
         return str(val)
 
