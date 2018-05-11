@@ -1074,7 +1074,15 @@ function genericPrint(path, options, print) {
       // on python2 exc is called type
       const type = n.type ? "type" : "exc";
 
-      return group(concat(["raise", line, path.call(print, type)]));
+      return concat([
+        "raise",
+        groupConcat([
+          ifBreak(" (", " "),
+          indentConcat([softline, path.call(print, type)]),
+          softline,
+          ifBreak(")")
+        ])
+      ]);
     }
 
     case "Return": {
