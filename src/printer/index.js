@@ -722,6 +722,20 @@ function genericPrint(path, options, print) {
       ]);
     }
 
+    case "Global": {
+      return groupConcat([
+        "global ",
+        printListLike(
+          path,
+          options,
+          "",
+          path.map(print, "names"),
+          trailingComma,
+          ""
+        )
+      ]);
+    }
+
     case "AugAssign": {
       return concat([
         path.call(print, "target"),
