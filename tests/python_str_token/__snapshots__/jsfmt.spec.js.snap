@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`str_token.py 1`] = `
+_srid_cache = defaultdict(dict)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+_srid_cache = defaultdict(dict)
+
+`;
+
+exports[`str_token.py 2`] = `
+_srid_cache = defaultdict(dict)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+_srid_cache = defaultdict(dict)
+
+`;
