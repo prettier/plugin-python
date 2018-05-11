@@ -4,8 +4,8 @@ exports[`bytes.py 1`] = `
 b"example"
 b'example'
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-b'example'
-b'example'
+b"example"
+b"example"
 
 `;
 
