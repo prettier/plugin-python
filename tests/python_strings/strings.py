@@ -13,8 +13,7 @@ a = 'both \'single\' and "double"'
 
 a = u"unicode snowman: \u26C4"
 a = r"this does not have a tab: \t"
-# Bytes crash the astexport.py script
-# a = b"here's some bytes"
+a = b"here's some bytes"
 
 a = '''escaped triple quote \''' in middle'''
 a = """escaped triple quote \""" in middle"""
@@ -38,9 +37,8 @@ foo("this should NOT be "
 foo(r"this should NOT be \t "
     r'a multi-line string \n')
 
-# Bytes crash the astexport.py script
-#foo(bR"this should NOT be \t "
-#    Br'a multi-line string \n')
+foo(bR"this should NOT be \t "
+   Br'a multi-line string \n')
 
 foo("""this should remain as is """
     '''because it is really weird''')

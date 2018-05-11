@@ -99,6 +99,9 @@ class DictExportVisitor:
     def visit_field_NameConstant_value(self, val):
         return str(val)
 
+    def visit_Bytes(self, val):
+        return str(val.s)
+
     def visit_field_Num_n(self, val):
         if isinstance(val, int):
             return {
