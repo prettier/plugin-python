@@ -50,6 +50,8 @@ function locStart(node) {
   if (node.loc) {
     return node.loc.start;
   }
+
+  return 0;
 }
 
 function locEnd(node) {
@@ -80,7 +82,7 @@ function locEnd(node) {
     return node.loc.end;
   }
 
-  return loc;
+  return loc || 0;
 }
 
 const parsers = {
