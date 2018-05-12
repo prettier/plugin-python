@@ -17,13 +17,13 @@
     "prettier": "prettier/prettier#d05a29da05b2084790491eaef85917ce584e4fbd"
   },
   "devDependencies": {
-    "eslint": "^4.14.0",
-    "eslint-config-prettier": "^2.9.0",
-    "eslint-plugin-import": "^2.8.0",
-    "eslint-plugin-jest": "^21.5.0",
-    "eslint-plugin-prettier": "^2.4.0",
-    "jest": "^21.1.0",
-    "jest-runner-eslint": "^0.3.0"
+    "eslint": "4.19.1",
+    "eslint-config-prettier": "2.9.0",
+    "eslint-plugin-import": "2.11.0",
+    "eslint-plugin-jest": "21.15.1",
+    "eslint-plugin-prettier": "2.6.0",
+    "jest": "22.4.3",
+    "jest-runner-eslint": "0.5.0"
   },
   "scripts": {
     "lint": "jest -c jest.eslint.config.js",
