@@ -371,15 +371,13 @@ function printIf(path, print) {
   const parts = [
     type,
     " ",
-    group(
-      concat([
-        ifBreak("("),
-        indent(indent(path.call(print, "test"))),
-        ifBreak(")")
-      ])
-    ),
+    groupConcat([
+      ifBreak("("),
+      indent(indent(path.call(print, "test"))),
+      ifBreak(")")
+    ]),
     ":",
-    indent(concat([hardline, printBody(path, print)]))
+    indentConcat([hardline, printBody(path, print)])
   ];
 
   if (n.orelse.length) {
@@ -609,14 +607,12 @@ function genericPrint(path, options, print) {
     case "Expr": {
       if (n.value) {
         if (n.value.ast_type === "BoolOp" || n.value.ast_type === "BinOp") {
-          return group(
-            concat([
-              ifBreak("("),
-              indent(concat([softline, path.call(print, "value")])),
-              softline,
-              ifBreak(")")
-            ])
-          );
+          return groupConcat([
+            ifBreak("("),
+            indentConcat([softline, path.call(print, "value")]),
+            softline,
+            ifBreak(")")
+          ]);
         }
       }
       return path.call(print, "value");
@@ -1128,14 +1124,12 @@ function genericPrint(path, options, print) {
           n.value.ast_type === "Str"
         ) {
           parts.push(
-            group(
-              concat([
-                ifBreak(" (", " "),
-                indent(concat([softline, path.call(print, "value")])),
-                softline,
-                ifBreak(")")
-              ])
-            )
+            groupConcat([
+              ifBreak(" (", " "),
+              indentConcat([softline, path.call(print, "value")]),
+              softline,
+              ifBreak(")")
+            ])
           );
         } else {
           parts.push(indentConcat([escapedLine, path.call(print, "value")]));
