@@ -124,7 +124,7 @@ function hasMultipleStrings(rawContent, openingQuote) {
 function printTry(print, path) {
   return [
     "try:",
-    indent(concat([hardline, printBody(path, print)])),
+    indentConcat([hardline, printBody(path, print)]),
     hardline,
     join(hardline, path.map(print, "handlers"))
   ];
@@ -350,7 +350,7 @@ function printWithItem(path, print) {
     parts.push(line, "as", line, path.call(print, "optional_vars"));
   }
 
-  return group(concat(parts));
+  return groupConcat(parts);
 }
 
 function printIf(path, print) {
@@ -669,14 +669,14 @@ function genericPrint(path, options, print) {
       const parts = [
         printForIn(path, print),
         ":",
-        indent(concat([hardline, printBody(path, print)]))
+        indentConcat([hardline, printBody(path, print)])
       ];
 
       if (n.orelse.length > 0) {
         parts.push(
           line,
           "else:",
-          indent(concat([line, concat(path.map(print, "orelse"))]))
+          indentConcat([line, concat(path.map(print, "orelse"))])
         );
       }
 
@@ -724,7 +724,7 @@ function genericPrint(path, options, print) {
           parts.push(
             groupConcat([
               ifBreak("("),
-              indent(concat([softline, path.call(print, "value")])),
+              indentConcat([softline, path.call(print, "value")]),
               softline,
               ifBreak(")")
             ])
@@ -834,7 +834,7 @@ function genericPrint(path, options, print) {
         n.name,
         concat(bases),
         ":",
-        indent(concat([hardline, printBody(path, print)]))
+        indentConcat([hardline, printBody(path, print)])
       );
 
       return concat(parts);
@@ -893,7 +893,7 @@ function genericPrint(path, options, print) {
         "while ",
         path.call(print, "test"),
         ":",
-        indent(concat([hardline, printBody(path, print)]))
+        indentConcat([hardline, printBody(path, print)])
       ]);
     }
 
@@ -1047,7 +1047,7 @@ function genericPrint(path, options, print) {
         parts.push(
           hardline,
           "else:",
-          indent(concat([hardline, concat(path.map(print, "orelse"))]))
+          indentConcat([hardline, concat(path.map(print, "orelse"))])
         );
       }
 
@@ -1055,7 +1055,7 @@ function genericPrint(path, options, print) {
         parts.push(
           hardline,
           "finally:",
-          indent(concat([hardline, concat(path.map(print, "finalbody"))]))
+          indentConcat([hardline, concat(path.map(print, "finalbody"))])
         );
       }
 
@@ -1069,7 +1069,7 @@ function genericPrint(path, options, print) {
         parts.push(
           hardline,
           "finally:",
-          indent(concat([hardline, concat(path.map(print, "finalbody"))]))
+          indentConcat([hardline, concat(path.map(print, "finalbody"))])
         );
       }
 
@@ -1094,8 +1094,8 @@ function genericPrint(path, options, print) {
       parts.push(":");
 
       return concat([
-        group(concat(parts)),
-        indent(concat([hardline, printBody(path, print)]))
+        groupConcat(parts),
+        indentConcat([hardline, printBody(path, print)])
       ]);
     }
 
@@ -1233,7 +1233,7 @@ function genericPrint(path, options, print) {
     }
 
     case "Await": {
-      return group(concat(["await", " ", path.call(print, "value")]));
+      return groupConcat(["await", " ", path.call(print, "value")]);
     }
 
     case "Lambda": {
@@ -1263,7 +1263,7 @@ function genericPrint(path, options, print) {
 
       parts.push(path.call(print, "value"));
 
-      return group(concat(parts));
+      return groupConcat(parts);
     }
 
     case "Starred": {
