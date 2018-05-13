@@ -191,6 +191,27 @@ function printArguments(print, path, argsKey, defaultsKey) {
   return parts;
 }
 
+function shouldPrintWrappedInParens(node) {
+  if (!node.value) {
+    return false;
+  }
+
+  return (
+    node.value.ast_type === "BoolOp" ||
+    node.value.ast_type === "BinOp" ||
+    node.value.ast_type === "Str"
+  );
+}
+
+function printWrappedInParens(path, print, defaultsKey) {
+  return groupConcat([
+    ifBreak("("),
+    indent(concat([softline, path.call(print, defaultsKey)])),
+    softline,
+    ifBreak(")")
+  ]);
+}
+
 function countNumPrecedingChars(text, start, char, skipChar) {
   skipChar = skipChar || "";
   let count = 0;
@@ -605,15 +626,8 @@ function genericPrint(path, options, print) {
     }
 
     case "Expr": {
-      if (n.value) {
-        if (n.value.ast_type === "BoolOp" || n.value.ast_type === "BinOp") {
-          return groupConcat([
-            ifBreak("("),
-            indentConcat([softline, path.call(print, "value")]),
-            softline,
-            ifBreak(")")
-          ]);
-        }
+      if (shouldPrintWrappedInParens(n)) {
+        return printWrappedInParens(path, print, "value");
       }
       return path.call(print, "value");
     }
@@ -716,19 +730,8 @@ function genericPrint(path, options, print) {
       const parts = [join(" = ", path.map(print, "targets")), " = "];
 
       if (n.value) {
-        if (
-          n.value.ast_type === "BoolOp" ||
-          n.value.ast_type === "BinOp" ||
-          n.value.ast_type === "Str"
-        ) {
-          parts.push(
-            groupConcat([
-              ifBreak("("),
-              indentConcat([softline, path.call(print, "value")]),
-              softline,
-              ifBreak(")")
-            ])
-          );
+        if (shouldPrintWrappedInParens(n)) {
+          parts.push(printWrappedInParens(path, print, "value"));
         } else {
           parts.push(path.call(print, "value"));
         }
@@ -1118,19 +1121,8 @@ function genericPrint(path, options, print) {
       const parts = ["return"];
 
       if (n.value) {
-        if (
-          n.value.ast_type === "BoolOp" ||
-          n.value.ast_type === "BinOp" ||
-          n.value.ast_type === "Str"
-        ) {
-          parts.push(
-            groupConcat([
-              ifBreak(" (", " "),
-              indentConcat([softline, path.call(print, "value")]),
-              softline,
-              ifBreak(")")
-            ])
-          );
+        if (shouldPrintWrappedInParens(n)) {
+          parts.push(" ", printWrappedInParens(path, print, "value"));
         } else {
           parts.push(indentConcat([escapedLine, path.call(print, "value")]));
         }
