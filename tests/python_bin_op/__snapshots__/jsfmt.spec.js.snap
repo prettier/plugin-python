@@ -3,17 +3,21 @@
 exports[`bin_op.py 1`] = `
 'LONG_STRING AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA %s' % my_long_variable_i
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-"LONG_STRING AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA %s" \\
-% \\
-my_long_variable_i
+(
+    "LONG_STRING AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA %s"
+    %
+    my_long_variable_i
+)
 
 `;
 
 exports[`bin_op.py 2`] = `
 'LONG_STRING AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA %s' % my_long_variable_i
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-"LONG_STRING AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA %s" \\
-% \\
-my_long_variable_i
+(
+    "LONG_STRING AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA %s"
+    %
+    my_long_variable_i
+)
 
 `;

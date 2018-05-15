@@ -21,6 +21,9 @@ a = """escaped triple quote \""" in middle"""
 a = """other triple quote ''' in the middle"""
 a = '''other triple quote """ in the middle'''
 
+a = ("this SHOULD be re-flowed, but still a multi-line string "
+    "because it is very long and does not fit on one line")
+
 # The interior triple quotes don't get escaped properly
 # a = '''both triple quotes """ and \''' in the middle'''
 # a = """both triple quotes ''' and \""" in the middle"""
@@ -59,3 +62,16 @@ foo(
     '''this SHOULD NOT be re-flowed, but still a multi-line string '''
     """because it is very long and does not fit on one line"""
 )
+
+def foo():
+    return (
+        "this SHOULD be re-flowed, but still a multi-line string "
+        "because it is very long and does not fit on one line"
+    )
+
+my_dict["this SHOULD be re-flowed, but still a multi-line string "
+    "because it is very long and does not fit on one line"]
+
+
+"this SHOULD remain a multi-line string "
+"it is very long and does not fit on one line"
