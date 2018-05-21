@@ -844,7 +844,17 @@ function genericPrint(path, options, print) {
     }
 
     case "Attribute": {
-      return concat([path.call(print, "value"), ".", n.attr]);
+      let parts = [];
+
+      if (shouldPrintWrappedInParens(n)) {
+        parts.push(printWrappedInParens(path, print, "value"));
+      } else {
+        parts = parts.concat(path.call(print, "value"));
+      }
+
+      parts.push(".", n.attr);
+
+      return concat(parts);
     }
 
     case "Compare": {

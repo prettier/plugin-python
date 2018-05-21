@@ -5,7 +5,9 @@ message = (
     "hello {}"  # comment
 ).format("world")
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-message = "hello {}".format("world") # comment
+message = (
+    "hello {}" # comment
+).format("world")
 
 `;
 
@@ -14,6 +16,8 @@ message = (
     "hello {}"  # comment
 ).format("world")
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-message = "hello {}".format("world") # comment
+message = (
+    "hello {}" # comment
+).format("world")
 
 `;

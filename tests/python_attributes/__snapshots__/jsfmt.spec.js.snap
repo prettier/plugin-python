@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`attributes.py 1`] = `
+query = (
+    'select count(*) from nodes '
+    'where count = {count}'
+).format(count=2)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+query = (
+    'select count(*) from nodes '
+    'where count = {count}'
+).format(count=2)
+
+`;
+
+exports[`attributes.py 2`] = `
+query = (
+    'select count(*) from nodes '
+    'where count = {count}'
+).format(count=2)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+query = (
+    'select count(*) from nodes '
+    'where count = {count}'
+).format(count=2)
+
+`;
