@@ -12,6 +12,16 @@ function parseText(text, pythonExecutable) {
     }
   );
 
+  const executionError = executionResult.error;
+
+  if (executionError) {
+    if (executionError.code === "ENOENT") {
+      throw new Error(`${pythonExecutable} was not found in your PATH`);
+    } else {
+      throw executionError;
+    }
+  }
+
   const error = executionResult.stderr.toString();
 
   if (error) {
