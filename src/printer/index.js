@@ -639,18 +639,20 @@ function genericPrint(path, options, print) {
     case "Call": {
       let args = [];
 
-      // python 2
+      args = args.concat(path.map(print, "args"));
+
+      // `starargs` and `kwargs` were removed in Python 3.5.
+      // Instead starred arguments exist in `args` and `kwargs` in `keywords`.
 
       if (n.starargs) {
         args.push(concat(["*", path.call(print, "starargs")]));
       }
 
+      args = args.concat(path.map(print, "keywords"));
+
       if (n.kwargs) {
         args.push(concat(["**", path.call(print, "kwargs")]));
       }
-
-      args = args.concat(path.map(print, "args"));
-      args = args.concat(path.map(print, "keywords"));
 
       return concat([path.call(print, "func"), "(", join(", ", args), ")"]);
     }
