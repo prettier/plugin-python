@@ -48,6 +48,8 @@ To test it out on a Python file:
 * Run `yarn`.
 * Create a file called `test.py`.
 * Run `yarn prettier test.py` to check the output.
+* Run `yarn prettier -- --write test.py` to rewrite file.
+* Check out `yarn prettier -- --help` for other options.
 
 ## Install
 
