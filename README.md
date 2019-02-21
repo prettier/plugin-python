@@ -1,6 +1,8 @@
-<p align="center">
-    :construction: Work in Progress! :construction:
-</p>
+# This plugin is deprecated.
+
+We recommend you use [Black](https://github.com/ambv/black) instead.
+
+---
 
 <div align="center">
 <img alt="Prettier"
